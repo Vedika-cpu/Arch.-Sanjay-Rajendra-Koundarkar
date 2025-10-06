@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ar. Sanjay Rajendra Koundarkar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root{
+            /* Spotify-Inspired Theme Colors */
+            --bg:#0e1217; 
+            --card:#1a202c; 
+            --accent:#1db954; /* Spotify Green */
+            --muted:#98a0a8; 
+            --glass: rgba(255,255,255,0.06);
+            --radius:12px; 
+            --transition:all .4s cubic-bezier(.2,.9,.3,1);
+        }
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            color: #e6eef6;
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Layout & Routing Styles (SPA Simulation) --- */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow-x: hidden; /* Prevent horizontal scroll during transition */
+            min-height: 100vh;
+        }
+        .view-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 20px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.6s cubic-bezier(.68, -0.55, 0.265, 1.55), opacity 0.5s ease-out;
+            pointer-events: none;
+        }
+        .view-panel.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative; 
+        }
+        .view-panel.slide-out-left {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* --- Hero Card (Architect Profile) --- */
+        .hero {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(29, 185, 84, 0.1), rgba(2, 6, 23, 0.5));
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass);
+        }
+        .portrait {
+            /* Profile Picture Enlarged */
+            width: 250px; 
+            height: 250px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            border: 5px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+        }
+        .portrait:hover { transform: scale(1.05) rotate(-2deg); }
+        .portrait img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* --- Featured Works Gallery --- */
+        .featured-img {
+            height: 200px;
+            object-fit: cover;
+            border: 3px solid transparent;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .featured-img:hover {
+            border-color: var(--accent);
+            transform: scale(1.02);
+            cursor: zoom-in;
+        }
+
+        /* --- Projects Grid & Cards --- */
+        .controls-bar {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .pill-button {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 18px;
+            border-radius: 999px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        .pill-button.active {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.5);
+            border-color: var(--accent);
+        }
+        .pill-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Better for mobile/tablet */
+            gap: 15px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s, border 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.05); /* Subtle border for attractiveness */
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 10px var(--accent);
+            border-color: var(--accent); 
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+        }
+        .card:hover img {
+            transform: scale(1.05);
+        }
+        .caption {
+            padding: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+        .caption .tag {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 2px;
+            font-weight: 400;
+            opacity: 0.8;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /* --- Modal Styling --- */
+        #zoomModal {
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .fbtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 48px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .portrait { 
+                /* Mobile Picture Enlarged */
+                width: 140px; 
+                height: 140px; 
+                border-radius: 10px; 
+            }
+            .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .card img { height: 120px; }
+            .featured-img { height: 120px; }
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            #project-search { margin-top: 10px; margin-left: 0 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Navbar/Header (Stays visible across both views) -->
+        <nav class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-sm p-4 shadow-2xl">
+            <div class="flex justify-between items-center max-w-7xl mx-auto">
+                <h1 class="text-xl font-bold text-white tracking-widest">S. R. KOUNDARKAR <span class="text-green-600">ARCHITECT</span></h1>
+                <div class="space-x-4">
+                    <button id="nav-home" class="text-gray-400 hover:text-white transition-colors font-medium">Profile</button>
+                    <button id="nav-projects" class="text-black bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition-all font-bold shadow-md hover:shadow-green-500/50">
+                        View Projects
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Home View -->
+        <section class="view-panel active" id="home-view">
+            <div class="hero">
+                <div class="portrait">
+                    <!-- Profile Image Path -->
+                    <img src="Images/Sanjay.jpeg" alt="Architect Sanjay R. Koundarkar Portrait" onerror="this.onerror=null;this.src='https://placehold.co/250x250/374151/white?text=Portrait+Missing';"> 
+                </div>
+                <div class="info">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold">Mr. Sanjay  Rajendra  Koundarkar</h1>
+                    <div class="text-xl role">Architect | Residential, Commercial, Temple Interior & Exterior</div>
+            
+                    <!-- Updated Paragraph with highlighted experience -->
+                    <p class="desc mt-3 text-gray-300">
+                        Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">18 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
+                    </p>
+                    
+                    <!-- Updated Attractive Buttons -->
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <!-- Contact Button (Phone) -->
+                        <a href="tel:+919890542067" class="flex items-center space-x-2 px-4 py-3 rounded-full bg-gray-700 text-green-400 font-bold hover:bg-gray-600 transition-all shadow-lg active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.373 18 2 12.627 2 6V3z" /></svg>
+                            <span>Call: +91 98905 42067</span>
+                        </a>
+                        
+                        <!-- WhatsApp Button (Highlighted) -->
+                        <a href="https://wa.me/919890542067" target="_blank" class="flex items-center space-x-2 px-4 py-3 rounded-full bg-green-600 text-black font-extrabold hover:bg-green-500 transition-all shadow-xl shadow-green-600/50 active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.036 2.015c-5.52 0-9.99 4.47-9.99 9.99 0 1.76-.45 3.39-1.22 4.83l-1.82 6.6 6.75-1.77c1.47.78 3.16 1.22 4.67 1.22 5.52 0 9.99-4.47 9.99-9.99s-4.47-9.99-9.99-9.99zm-4.75 5.5l-.35.85c-.34.82-.53 1.69-.53 2.59 0 3.32 2.7 6.02 6.02 6.02 1.54 0 3-.56 4.1-1.5l.38-.34-.8-.92-.22-.27c-.85.83-1.89 1.28-3.05 1.28-2.3 0-4.17-1.87-4.17-4.17 0-.9.28-1.74.77-2.45l.28-.43-.8-.92c-.37-.4-.84-.87-1.37-1.37zm1.6 3.92c.1.25.1.52 0 .77l-.63 1.5c-.09.22-.09.46 0 .68l.2.46c.14.3.4.5.7.5.3 0 .56-.1.7-.4l.63-1.5c.09-.22.09-.46 0-.68l-.2-.46c-.14-.3-.4-.5-.7-.5-.3 0-.56.1-.7.4z" fill="#000"/></svg>
+                            <span>WhatsApp Now</span>
+                        </a>
+                        
+                        <!-- Location (Badge) -->
+                        <div class="flex items-center space-x-2 px-4 py-3 rounded-full bg-gray-800 text-gray-400 font-medium border border-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                            <span>Based in Chiplun, India</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-10">
+                <h2 class="text-2xl font-bold mb-4 text-white border-l-4 border-green-600 pl-3">Popular Featured Works</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Featured Image 1 -->
+                    <img src="Images/Home-Interior-and-exterior/na.jpeg" alt="Featured Work 1: Home Interior" class="featured-img rounded-lg" onclick="openModal('Images/Home-Interior-and-exterior/na.jpeg')">
+                    <!-- Featured Image 2 -->
+                    <img src="Images/Triangle-Shaped/ccc.jpeg" alt="Featured Work 2: Farmhouse" class="featured-img rounded-lg" onclick="openModal('Images/Triangle-Shaped/ccc.jpeg')">
+                </div>
+                <button id="goto-projects-btn" class="w-full mt-8 view-projects px-6 py-4 bg-green-600 text-black font-extrabold rounded-lg text-lg shadow-xl shadow-green-600/30 hover:bg-green-500 transition-transform active:scale-95">
+                    View Complete Project Gallery →
+                </button>
+            </div>
+        </section>
+
+        <!-- Projects View -->
+        <section id="projects-view" class="view-panel">
+            <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-3">
+                <h2 class="text-3xl font-bold text-white">Project Gallery</h2>
+                <button id="back-to-home-btn" class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                    <span>Back to Profile</span>
+                </button>
+            </div>
+
+            <!-- Controls Bar: Category Pills & Search -->
+            <div class="controls-bar">
+                <span class="text-sm text-white font-semibold flex-shrink-0 mr-2">Filter by:</span>
+                <div id="category-list" class="flex flex-wrap gap-2">
+                    <!-- Pills generated by JS -->
+                </div>
+                <input type="text" id="project-search" placeholder="Search projects by tag or title..." class="flex-1 min-w-[150px] p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring focus:ring-green-500/50 transition-all ml-auto">
+            </div>
+            
+            <p id="description" class="text-gray-400 mb-6 border-l-4 border-green-600 pl-3 italic">Select a category to explore our wide range of work.</p>
+
+            <div class="gallery" id="gallery">
+                <!-- Project Cards generated by JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Image Zoom Modal (Advanced) -->
+    <div class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none" id="zoomModal" aria-hidden="true">
+        <div class="relative w-full h-full flex items-center justify-center">
+            <!-- Zoomable Image Container -->
+            <img id="zoomImg" src="" alt="zoomed project image" class="max-w-full max-h-full object-contain cursor-grab transition-transform duration-100" style="transform-origin: center center;">
+            
+            <!-- Controls Floating -->
+            <div class="absolute bottom-6 right-6 flex flex-col gap-3 bg-gray-800/80 p-3 rounded-xl shadow-2xl backdrop-blur-md">
+                <button class="fbtn bg-green-600 text-black hover:bg-green-500 transition-colors shadow-lg font-bold" id="zoomIn">Zoom +</button>
+                <button class="fbtn bg-green-600 text-black hover:bg-green-500 transition-colors shadow-lg font-bold" id="zoomOut">Zoom -</button>
+                <button class="fbtn bg-red-600 text-white hover:bg-red-500 transition-colors shadow-lg font-bold" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="fixed inset-0 bg-gray-900/90 z-[60] flex flex-col items-center justify-center text-white text-lg transition-opacity duration-300 pointer-events-none opacity-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin -ml-1 mr-3 h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
+        Loading Portfolio...
+    </div>
+
+  <script>
+    // Utility for placeholder/fallback image URL
+    const getPlaceholder = (text) => 
+        `https://placehold.co/600x400/374151/white?text=${encodeURIComponent(text.substring(0, 30).trim().replace(/-/g, ' '))}`;
+
+    // --- PROJECT DATA STRUCTURE WITH CORRECTED RELATIVE PATHS ---
+    const DATA = {
+      "Building Constructions":{
+        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
+        images:[
+            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
+            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+        ]
+      },
+      "Chiplun Temple (On-going)":{
+        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
+        images:[
+            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
+            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
+            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
+            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
+            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
+        ]
+      },
+      "Home interior and exterior":{
+        desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
+        images:[
+            { src: "Images/Home-Interior-and-exterior/fa.jpeg", tag: "kitchen interior modular modern" },
+            { src: "Images/Home-Interior-and-exterior/la.jpeg", tag: "wardrobe bedroom interior storage" },
+            { src: "Images/Home-Interior-and-exterior/za.jpeg", tag: "living room interior furniture" },
+            { src: "Images/Home-Interior-and-exterior/na.jpeg", tag: "modern facade exterior lighting" },
+            { src: "Images/Home-Interior-and-exterior/qa.jpeg", tag: "balcony design landscape" },
+            { src: "Images/Home-Interior-and-exterior/sa.jpeg", tag: "dining area custom" },
+            { src: "Images/Home-Interior-and-exterior/ta.jpeg", tag: "bathroom vanity tile" }
+        ]
+      },
+      "Temple interior and exterior":{
+        desc:"Specialized work in sacred architecture, covering both the devotional interior layout and the magnificent exterior stonework of temples across India.",
+        images:[
+            { src: "Images/Temple-Interior-and-Exterior/abcd.jpeg", tag: "sacred carving stonework" },
+            { src: "Images/Temple-Interior-and-Exterior/ac.jpeg", tag: "gopuram design architecture" },
+            { src: "Images/Temple-Interior-and-Exterior/be.jpeg", tag: "interior mandap ceiling" },
+            { src: "Images/Temple-Interior-and-Exterior/de.jpeg", tag: "exterior detail stone" },
+            { src: "Images/Temple-Interior-and-Exterior/efgh.jpeg", tag: "traditional design vastu" },
+            { src: "Images/Temple-Interior-and-Exterior/ijkl.jpeg", tag: "pillar detail craftsmanship" },
+            { src: "Images/Temple-Interior-and-Exterior/mnop.jpeg", tag: "temple entrance facade" },
+            { src: "Images/Temple-Interior-and-Exterior/ol.jpeg", tag: "altar design" },
+            { src: "Images/Temple-Interior-and-Exterior/op.jpeg", tag: "prayer hall interior" },
+            { src: "Images/Temple-Interior-and-Exterior/pq.jpeg", tag: "shikhara view" },
+            { src: "Images/Temple-Interior-and-Exterior/qrst.jpeg", tag: "stone facade exterior" },
+            { src: "Images/Temple-Interior-and-Exterior/sq.jpeg", tag: "interior lighting" },
+            { src: "Images/Temple-Interior-and-Exterior/uvwx.jpeg", tag: "detailed carving" },
+            { src: "Images/Temple-Interior-and-Exterior/yz.jpeg", tag: "final temple design" }
+        ]
+      },
+      "Stone-structure for Tulsi":{
+        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
+        images:[
+            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
+            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
+            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
+        ]
+      },
+      "Farm House work":{
+        desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
+        images:[
+            { src: "Images/Triangle-Shaped/aaa.jpeg", tag: "farmhouse rustic nature" },
+            { src: "Images/Triangle-Shaped/ccc.jpeg", tag: "triangular structure unique" },
+            { src: "Images/Triangle-Shaped/ddd.jpeg", tag: "exterior design spacious" },
+            { src: "Images/Triangle-Shaped/eee.jpeg", tag: "wooden cabin" },
+            { src: "Images/Triangle-Shaped/fff.jpeg", tag: "modern barn" },
+            { src: "Images/Triangle-Shaped/ggg.jpeg", tag: "landscape integration" },
+            { src: "Images/Triangle-Shaped/hdu.jpeg", tag: "terrace view" },
+            { src: "Images/Triangle-Shaped/hhh.jpeg", tag: "large windows" },
+            { src: "Images/Triangle-Shaped/hjk.jpeg", tag: "poolside view" },
+            { src: "Images/Triangle-Shaped/iii.jpeg", tag: "interior rustic" },
+            { src: "Images/Triangle-Shaped/jjj.jpeg", tag: "kitchen farmhouse" },
+            { src: "Images/Triangle-Shaped/kkk.jpeg", tag: "bedroom retreat" },
+            { src: "Images/Triangle-Shaped/lll.jpeg", tag: "open concept" },
+            { src: "Images/Triangle-Shaped/qqqq.jpeg", tag: "stone facade" },
+            { src: "Images/Triangle-Shaped/nnn.jpeg", tag: "roof design" },
+            { src: "Images/Triangle-Shaped/ooo.jpeg", tag: "modern farmhouse" },
+            { src: "Images/Triangle-Shaped/ppp.jpeg", tag: "garden planning" },
+            { src: "Images/Triangle-Shaped/qqq.jpeg", tag: "patio design" },
+            { src: "Images/Triangle-Shaped/rrr.jpeg", tag: "sunset view" },
+            { src: "Images/Triangle-Shaped/triangle.jpeg", tag: "geometry unique" },
+            { src: "Images/Triangle-Shaped/vvv.jpeg", tag: "natural materials" }
+        ]
+      },
+      "Interiors":{
+        desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
+        images:[
+            { src: "Images/All-Interiors/1.jpeg", tag: "living room luxury" }, { src: "Images/All-Interiors/2.jpeg", tag: "kitchen modular" },
+            { src: "Images/All-Interiors/3.jpeg", tag: "bedroom modern" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
+            { src: "Images/All-Interiors/5.jpeg", tag: "entryway lighting" }, { src: "Images/All-Interiors/6.jpeg", tag: "wardrobe design" },
+            { src: "Images/All-Interiors/7.jpeg", tag: "commercial office" }, { src: "Images/All-Interiors/8.jpeg", tag: "tv unit panel" },
+            { src: "Images/All-Interiors/9.jpeg", tag: "wall texture" }, { src: "Images/All-Interiors/10.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/11.jpeg", tag: "residential bathroom" }, { src: "Images/All-Interiors/12.jpeg", tag: "staircase design" },
+            { src: "Images/All-Interiors/13.jpeg", tag: "wooden finish" }, { src: "Images/All-Interiors/14.jpeg", tag: "kids room" },
+            { src: "Images/All-Interiors/15.jpeg", tag: "pantry area" }, { src: "Images/All-Interiors/16.jpeg", tag: "bar counter" },
+            { src: "Images/All-Interiors/17.jpeg", tag: "study table" }, { src: "Images/All-Interiors/18.jpeg", tag: "home theater" },
+            { src: "Images/All-Interiors/19.jpeg", tag: "guest room" }, { src: "Images/All-Interiors/20.jpeg", tag: "master bedroom" },
+            { src: "Images/All-Interiors/21.jpeg", tag: "small apartment" }, { src: "Images/All-Interiors/22.jpeg", tag: "open plan" },
+            { src: "Images/All-Interiors/23.jpeg", tag: "partition wall" }, { src: "Images/All-Interiors/24.jpeg", tag: "ambient lighting" },
+            { src: "Images/All-Interiors/25.jpeg", tag: "balcony seating" }, { src: "Images/All-Interiors/26.jpeg", tag: "traditional motif" },
+            { src: "Images/All-Interiors/27.jpeg", tag: "storage solutions" }, { src: "Images/All-Interiors/28.jpeg", tag: "high end finish" },
+            { src: "Images/All-Interiors/29.jpeg", tag: "ceramic tile" }, { src: "Images/All-Interiors/30.jpeg", tag: "mirror work" },
+            { src: "Images/All-Interiors/31.jpeg", tag: "lobby design" }, { src: "Images/All-Interiors/32.jpeg", tag: "reception area" },
+            { src: "Images/All-Interiors/33.jpeg", tag: "meeting room" }, { src: "Images/All-Interiors/34.jpeg", tag: "lounge seating" },
+            { src: "Images/All-Interiors/35.jpeg", tag: "executive cabin" }, { src: "Images/All-Interiors/36.jpeg", tag: "library design" },
+            { src: "Images/All-Interiors/37.jpeg", tag: "artwork placement" }, { src: "Images/All-Interiors/38.jpeg", tag: "texture play" },
+            { src: "Images/All-Interiors/39.jpeg", tag: "indoor plants" }, { src: "Images/All-Interiors/40.jpeg", tag: "natural light" },
+            { src: "Images/All-Interiors/41.jpeg", tag: "minimalist style" }, { src: "Images/All-Interiors/42.jpeg", tag: "color palette" },
+            { src: "Images/All-Interiors/43.jpeg", tag: "geometric patterns" }, { src: "Images/All-Interiors/44.jpeg", tag: "accent furniture" },
+            { src: "Images/All-Interiors/45.jpeg", tag: "floating shelves" }, { src: "Images/All-Interiors/46.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/47.jpeg", tag: "custom cabinetry" }, { src: "Images/All-Interiors/48.jpeg", tag: "marble flooring" },
+            { src: "Images/All-Interiors/49.jpeg", tag: "metal finishes" }, { src: "Images/All-Interiors/50.jpeg", tag: "contemporary" },
+            { src: "Images/All-Interiors/51.jpeg", tag: "classic design" }, { src: "Images/All-Interiors/52.jpeg", tag: "rustic charm" },
+            { src: "Images/All-Interiors/53.jpeg", tag: "industrial look" }, { src: "Images/All-Interiors/54.jpeg", tag: "scandinavian" },
+            { src: "Images/All-Interiors/55.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/56.jpeg", tag: "eclectic mix" },
+            { src: "Images/All-Interiors/57.jpeg", tag: "mid-century modern" }, { src: "Images/All-Interiors/58.jpeg", tag: "coastal theme" },
+            { src: "Images/All-Interiors/59.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/60.jpeg", tag: "north indian style" },
+            { src: "Images/All-Interiors/61.jpeg", tag: "maharashtrian design" }, { src: "Images/All-Interiors/62.jpeg", tag: "gujarati influence" },
+            { src: "Images/All-Interiors/63.jpeg", tag: "rajasthani elements" }, { src: "Images/All-Interiors/64.jpeg", tag: "punjabi interior" },
+            { src: "Images/All-Interiors/65.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/66.jpeg", tag: "bengali aesthetics" },
+            { src: "Images/All-Interiors/67.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/68.jpeg", tag: "kolkata flat" },
+            { src: "Images/All-Interiors/69.jpeg", tag: "mumbai apartment" }, { src: "Images/All-Interiors/70.jpeg", tag: "delhi villa" },
+            { src: "Images/All-Interiors/71.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/72.jpeg", tag: "Maharashtra is great" },
+            { src: "Images/All-Interiors/73.jpeg", tag: "pune property" }, { src: "Images/All-Interiors/74.jpeg", tag: "goa beach house" },
+            { src: "Images/All-Interiors/75.jpeg", tag: "office pantry" }, { src: "Images/All-Interiors/76.jpeg", tag: "conference room" },
+            { src: "Images/All-Interiors/77.jpeg", tag: "workstation design" }, { src: "Images/All-Interiors/78.jpeg", tag: "breakout area" },
+            { src: "Images/All-Interiors/79.jpeg", tag: "training room" }, { src: "Images/All-Interiors/80.jpeg", tag: "server room" },
+            { src: "Images/All-Interiors/81.jpeg", tag: "data center" }, { src: "Images/All-Interiors/82.jpeg", tag: "security cabin" },
+            { src: "Images/All-Interiors/83.jpeg", tag: "gym interior" }, { src: "Images/All-Interiors/84.jpeg", tag: "spa design" },
+            { src: "Images/All-Interiors/85.jpeg", tag: "salon interior" }, { src: "Images/All-Interiors/86.jpeg", tag: "retail store" },
+            { src: "Images/All-Interiors/87.jpeg", tag: "boutique design" }, { src: "Images/All-Interiors/88.jpeg", tag: "restaurant design" },
+            { src: "Images/All-Interiors/89.jpeg", tag: "cafe interior" }, { src: "Images/All-Interiors/90.jpeg", tag: "bar lounge" },
+            { src: "Images/All-Interiors/91.jpeg", tag: "clubhouse interior" }, { src: "Images/All-Interiors/93.jpeg", tag: "community hall" },
+            { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
+            { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
+        ]
+      },
+      "Exteriors":{
+        desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
+        images:[
+            { src: "Images/Exteriors/c1.jpeg", tag: "modern facade glass" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
+            { src: "Images/Exteriors/c3.jpeg", tag: "apartment facade" }, { src: "Images/Exteriors/c4.jpeg", tag: "commercial building" },
+            { src: "Images/Exteriors/c5.jpeg", tag: "compound wall design" }, { src: "Images/Exteriors/c6.jpeg", tag: "balcony railing" },
+            { src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" }, { src: "Images/Exteriors/c8.jpeg", tag: "portico design" },
+            { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c10.jpeg", tag: "driveway paver" },
+            { src: "Images/Exteriors/c11.jpeg", tag: "outdoor lighting" }, { src: "Images/Exteriors/c12.jpeg", tag: "swimming pool" },
+            { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" }, { src: "Images/Exteriors/c14.jpeg", tag: "fountain feature" },
+            { src: "Images/Exteriors/c15.jpeg", tag: "landscape planning" }
+        ]
+      },
+      "Real World 3D":{
+        desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
+        images:[
+            { src: "Images/3D-real-world/100.jpeg", tag: "visualization rendering 3D exterior" },
+            { src: "Images/3D-real-world/101.jpeg", tag: "3D rendering modern house" },
+            { src: "Images/3D-real-world/102.jpeg", tag: "client presentation view" },
+            { src: "Images/3D-real-world/103.jpeg", tag: "pre-construction review" },
+            { src: "Images/3D-real-world/104.jpeg", tag: "night view rendering" },
+            { src: "Images/3D-real-world/105.jpeg", tag: "interior visualization" },
+            { src: "Images/3D-real-world/106.jpeg", tag: "landscape 3D model" },
+            { src: "Images/3D-real-world/107.jpeg", tag: "commercial 3D" },
+            { src: "Images/3D-real-world/108.jpeg", tag: "apartment rendering" },
+            { src: "Images/3D-real-world/109.jpeg", tag: "architectural model" },
+            { src: "Images/3D-real-world/NR-HR-111.jpg", tag: "high resolution rendering" },
+            { src: "Images/3D-real-world/NR-HR-444.jpg", tag: "HR rendering commercial" },
+            { src: "Images/3D-real-world/NR-HR-666.jpg", tag: "HR rendering facade" },
+            { src: "Images/3D-real-world/NR-HR-888.jpg", tag: "HR rendering detail" }
+        ]
+      }
+    };
+
+    // --- State & Initialization ---
+
+    // Flatten data for search indexing
+    const ALL_PROJECTS = Object.entries(DATA).flatMap(([category, content]) => 
+        content.images.map(img => ({
+            category: category,
+            desc: content.desc,
+            src: img.src,
+            tags: img.tag.toLowerCase(),
+            title: category, 
+            searchIndex: `${category.toLowerCase()} ${content.desc.toLowerCase()} ${img.tag.toLowerCase()}`
+        }))
+    );
+
+    // DOM Elements & State
+    const catList = document.getElementById('category-list');
+    const gallery = document.getElementById('gallery');
+    const descEl = document.getElementById('description');
+    const searchInput = document.getElementById('project-search');
+    const homeView = document.getElementById('home-view');
+    const projectsView = document.getElementById('projects-view');
+    const zoomModal = document.getElementById('zoomModal');
+    const zoomImg = document.getElementById('zoomImg');
+    const loadingIndicator = document.getElementById('loading-indicator');
+
+    let currentCategory = null;
+    let zoomScale = 1;
+    let isDragging = false;
+    let startX, startY, currentX = 0, currentY = 0;
+
+
+    // --- Router and Navigation (SPA Simulation) ---
+    function navigate(viewId) {
+        if (viewId === 'home') {
+            projectsView.classList.remove('active');
+            projectsView.classList.add('slide-out-left');
+            
+            homeView.classList.remove('slide-out-left');
+            homeView.classList.add('active');
+            window.location.hash = '#home';
+        } else if (viewId === 'projects') {
+            homeView.classList.remove('active');
+            homeView.classList.add('slide-out-left');
+            
+            projectsView.classList.remove('slide-out-left');
+            projectsView.classList.add('active');
+            window.location.hash = '#projects';
+            
+            // Ensure gallery is rendered when navigating to projects (initial load or category change)
+            if (!currentCategory) {
+                 renderPills(); // Initialize pills and first category
+            } else {
+                 filterGallery();
+            }
+        }
+    }
+
+    // Hash change handler to support browser back/forward buttons
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash === 'projects') {
+            navigate('projects');
+        } else {
+            navigate('home');
+        }
+    });
+
+    // Initial check for hash on page load
+    if (window.location.hash.includes('projects')) {
+        homeView.classList.remove('active');
+        projectsView.classList.add('active');
+    } else {
+        homeView.classList.add('active');
+        projectsView.classList.remove('active');
+    }
+
+    // Attach Nav Events
+    document.getElementById('nav-home').addEventListener('click', () => navigate('home'));
+    document.getElementById('back-to-home-btn').addEventListener('click', () => navigate('home'));
+    document.getElementById('nav-projects').addEventListener('click', () => navigate('projects'));
+    document.getElementById('goto-projects-btn').addEventListener('click', () => navigate('projects'));
+
+    // --- Gallery Logic ---
+
+    function renderPills() {
+        // Set the first category as active initially
+        const categories = Object.keys(DATA);
+        currentCategory = categories[0];
+        
+        catList.innerHTML = ''; // Clear previous pills
+        
+        categories.forEach((cat, idx) => {
+            const b = document.createElement('button');
+            b.className = 'pill-button';
+            if (idx === 0) b.classList.add('active');
+            b.textContent = cat;
+            b.setAttribute('data-category', cat);
+            b.addEventListener('click', (e) => selectCategory(cat, e.target));
+            catList.appendChild(b);
+        });
+
+        // Initial render
+        selectCategory(currentCategory, catList.querySelector('.pill-button'));
+    }
+
+    function selectCategory(cat, btn) {
+        currentCategory = cat;
+        
+        // Update pills
+        document.querySelectorAll('.pill-button').forEach(p => p.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        
+        // Update description
+        descEl.textContent = DATA[cat].desc || '';
+        
+        // Clear search input on category change
+        searchInput.value = '';
+        
+        // Render filtered gallery
+        filterGallery();
+    }
+
+    function createCard(project) {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = project.src;
+        img.alt = project.title;
+        // Fallback image source if the relative path is broken
+        img.onerror = () => img.src = getPlaceholder(`Missing: ${project.src.split('/').pop()}`); 
+
+        // Attach modal open event
+        img.addEventListener('click', () => openModal(project.src));
+
+        const caption = document.createElement('div');
+        caption.className = 'caption';
+        // Display Project Title and the first few tags
+        caption.innerHTML = `
+            ${project.title}
+            <div class="tag">${project.tags.split(' ').slice(0, 3).join(' | ')}</div>
+        `;
+        
+        card.appendChild(img);
+        card.appendChild(caption);
+        return card;
+    }
+
+    function filterGallery() {
+        gallery.innerHTML = '';
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        const filteredProjects = ALL_PROJECTS.filter(project => {
+            // Filter by selected category 
+            const isCategoryMatch = !currentCategory || project.category === currentCategory;
+            // Filter by search term
+            const isSearchMatch = project.searchIndex.includes(searchTerm);
+            return isCategoryMatch && isSearchMatch;
+        });
+
+        if (filteredProjects.length === 0) {
+            gallery.innerHTML = '<p class="text-gray-500 col-span-full p-6 text-center text-lg">No projects found matching the selected category and search term. Try a different filter!</p>';
+        } else {
+            filteredProjects.forEach(project => {
+                gallery.appendChild(createCard(project));
+            });
+        }
+    }
+
+    // Attach Search Event 
+    searchInput.addEventListener('input', filterGallery);
+
+    // --- Modal/Zoom Logic (Pan and Zoom) ---
+
+    function openModal(src) {
+        zoomImg.src = src; 
+        zoomScale = 1; 
+        currentX = 0; currentY = 0;
+        applyTransform();
+        zoomModal.classList.add('opacity-100', 'pointer-events-auto');
+        zoomModal.setAttribute('aria-hidden','false');
+    }
+    
+    function closeModal() { 
+        zoomModal.classList.remove('opacity-100', 'pointer-events-auto'); 
+        zoomModal.setAttribute('aria-hidden','true'); 
+    }
+
+    function applyTransform() { 
+        zoomImg.style.transform = `scale(${zoomScale}) translate(${currentX}px, ${currentY}px)`; 
+    }
+
+    document.getElementById('zoomIn').addEventListener('click', () => { zoomScale = Math.min(zoomScale + 0.2, 5); applyTransform(); });
+    document.getElementById('zoomOut').addEventListener('click', () => { zoomScale = Math.max(zoomScale - 0.2, 0.5); if(zoomScale < 1) { currentX=0; currentY=0; } applyTransform(); });
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+
+    // Close on backdrop click (ensures only click on the background closes it)
+    zoomModal.addEventListener('click', (e) => { 
+        // Check if the click target is the modal overlay itself
+        if (e.target === zoomModal) { 
+            closeModal(); 
+        } 
+    });
+
+    // Dragging events for panning (only active when zoomed in)
+    zoomImg.addEventListener('mousedown', (e) => {
+        if (zoomScale > 1) {
+            e.preventDefault();
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            zoomImg.style.cursor = 'grabbing';
+        }
+    });
+    // Touch events for mobile dragging
+    zoomImg.addEventListener('touchstart', (e) => {
+        if (zoomScale > 1 && e.touches.length === 1) {
+            e.preventDefault();
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }
+    });
+
+    // Move Handler
+    const moveHandler = (e) => {
+        if (!isDragging || zoomScale <= 1) return;
+        
+        const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+        const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+        
+        currentX += dx;
+        currentY += dy;
+        
+        startX = clientX;
+        startY = clientY;
+        
+        applyTransform();
+    }
+
+    window.addEventListener('mousemove', moveHandler);
+    window.addEventListener('touchmove', moveHandler, { passive: false });
+
+
+    // End Drag Handler
+    const endDragHandler = () => {
+        if (isDragging) {
+            isDragging = false;
+            zoomImg.style.cursor = zoomScale > 1 ? 'grab' : 'default';
+        }
+    }
+
+    window.addEventListener('mouseup', endDragHandler);
+    window.addEventListener('touchend', endDragHandler);
+
+    // Wheel zoom
+    zoomImg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = -Math.sign(e.deltaY) * 0.2;
+        zoomScale = Math.min(Math.max(0.5, zoomScale + delta), 8);
+        if(zoomScale < 1) { currentX=0; currentY=0; } 
+        applyTransform();
+    }, { passive: false });
+
+
+    // --- Initialization ---
+    function initialize() {
+        // Show loading indicator briefly on load
+        loadingIndicator.classList.add('opacity-100', 'pointer-events-auto');
+        
+        // Delay to simulate asset loading, then initialize projects and hide loading
+        setTimeout(() => {
+            if (window.location.hash.includes('projects')) {
+                renderPills();
+            }
+            loadingIndicator.classList.remove('opacity-100', 'pointer-events-auto');
+        }, 800); 
+    }
+
+    initialize();
+  </script>
+</body>
+</html>
