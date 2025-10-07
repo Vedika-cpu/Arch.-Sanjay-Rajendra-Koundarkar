@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ar. Sanjay Rajendra Koundarkar</title>
+    <title>Arch. Sanjay Rajendra Koundarkar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -33,7 +33,7 @@
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            overflow-x: hidden; /* Prevent horizontal scroll during transition */
+            overflow-x: hidden;
             min-height: 100vh;
         }
         .view-panel {
@@ -72,7 +72,6 @@
             border: 1px solid var(--glass);
         }
         .portrait {
-            /* Profile Picture Enlarged */
             width: 250px; 
             height: 250px;
             border-radius: 50%;
@@ -106,19 +105,25 @@
             padding: 1rem;
             margin-bottom: 20px;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column; /* Stack filter and search vertically on mobile */
             gap: 12px;
-            align-items: center;
+        }
+        #category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px; /* Reduced gap for more pills per row */
         }
         .pill-button {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 18px;
+            padding: 8px 16px; /* Reduced padding slightly */
             border-radius: 999px;
             color: var(--muted);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            font-size: 0.875rem; /* Slightly smaller text */
+            flex-shrink: 0;
         }
         .pill-button.active {
             background: var(--accent);
@@ -133,7 +138,7 @@
         }
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Better for mobile/tablet */
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
         }
         .card {
@@ -143,7 +148,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s, border 0.3s;
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05); /* Subtle border for attractiveness */
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .card:hover {
             transform: translateY(-4px);
@@ -181,20 +186,62 @@
         #zoomModal {
             transition: opacity 0.3s, visibility 0.3s;
         }
+        /* Smaller, circular, semi-transparent floating buttons */
         .fbtn {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100px;
-            height: 48px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            width: 44px; 
+            height: 44px;
+            border-radius: 50%; 
+            font-size: 0.75rem;
+            background: rgba(43, 43, 43, 0.7); /* Dark semi-transparent */
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+            border: none;
+            flex-shrink: 0;
+            padding: 0;
+        }
+        .fbtn:hover {
+            background: var(--accent);
+            color: #000;
+            transform: scale(1.05);
+        }
+        .fbtn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.0);
+            color: white;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 51;
+            transition: background 0.3s, opacity 0.3s;
+            border: none;
+            opacity: 0.7;
+        }
+        .nav-arrow:hover { background: rgba(29, 185, 84, 0.1); opacity: 1; }
+        .nav-arrow:active { background: rgba(29, 185, 84, 0.3); }
+        .nav-arrow.hidden { opacity: 0; pointer-events: none; }
+        #prevBtn { left: 0; }
+        #nextBtn { right: 0; }
+
         @media (max-width: 768px) {
             .hero { flex-direction: column; align-items: flex-start; padding: 20px; }
             .portrait { 
-                /* Mobile Picture Enlarged */
                 width: 140px; 
                 height: 140px; 
                 border-radius: 10px; 
@@ -202,8 +249,9 @@
             .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .card img { height: 120px; }
             .featured-img { height: 120px; }
-            .controls-bar { flex-direction: column; align-items: stretch; }
-            #project-search { margin-top: 10px; margin-left: 0 !important; }
+            .controls-bar { align-items: stretch; }
+            .nav-arrow { width: 40px; }
+            #project-search { margin-top: 5px; } /* Adjust spacing for mobile search bar */
         }
     </style>
 </head>
@@ -213,7 +261,7 @@
         <!-- Navbar/Header (Stays visible across both views) -->
         <nav class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-sm p-4 shadow-2xl">
             <div class="flex justify-between items-center max-w-7xl mx-auto">
-                <h1 class="text-xl font-bold text-white tracking-widest">S. R. KOUNDARKAR <span class="text-green-600">ARCHITECT</span></h1>
+                <h1 class="text-xl font-bold text-white tracking-widest"> <span class="text-green-600"> ARCH. </span>S. R. KOUNDARKAR </h1>
                 <div class="space-x-4">
                     <button id="nav-home" class="text-gray-400 hover:text-white transition-colors font-medium">Profile</button>
                     <button id="nav-projects" class="text-black bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition-all font-bold shadow-md hover:shadow-green-500/50">
@@ -231,9 +279,9 @@
                     <img src="Images/Sanjay.jpeg" alt="Architect Sanjay R. Koundarkar Portrait" onerror="this.onerror=null;this.src='https://placehold.co/250x250/374151/white?text=Portrait+Missing';"> 
                 </div>
                 <div class="info">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold">Mr. Sanjay  Rajendra  Koundarkar</h1>
-                    <div class="text-xl role">Architect | Residential, Commercial, Temple Interior & Exterior</div>
-            
+                    <h1 class="text-3xl sm:text-4xl font-extrabold">Mr. Sanjay  Rajendra  Koundarkar</h1>
+                    <div class="text-xl role"><span class="text-yellow-600"><bold>Architect | Residential, Commercial, Temple Interior & Exterior</bold></span></div>
+                
                     <!-- Updated Paragraph with highlighted experience -->
                     <p class="desc mt-3 text-gray-300">
                         Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">18 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
@@ -288,11 +336,13 @@
 
             <!-- Controls Bar: Category Pills & Search -->
             <div class="controls-bar">
-                <span class="text-sm text-white font-semibold flex-shrink-0 mr-2">Filter by:</span>
-                <div id="category-list" class="flex flex-wrap gap-2">
-                    <!-- Pills generated by JS -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm text-white font-semibold flex-shrink-0">Filter by:</span>
+                    <div id="category-list" class="flex flex-wrap gap-2">
+                        <!-- Pills generated by JS -->
+                    </div>
                 </div>
-                <input type="text" id="project-search" placeholder="Search projects by tag or title..." class="flex-1 min-w-[150px] p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring focus:ring-green-500/50 transition-all ml-auto">
+                <input type="text" id="project-search" placeholder="Search projects by tag or title..." class="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring focus:ring-green-500/50 transition-all">
             </div>
             
             <p id="description" class="text-gray-400 mb-6 border-l-4 border-green-600 pl-3 italic">Select a category to explore our wide range of work.</p>
@@ -304,17 +354,34 @@
 
     </div>
 
-    <!-- Image Zoom Modal (Advanced) -->
+    <!-- Image Zoom Modal (Advanced with Navigation) -->
     <div class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none" id="zoomModal" aria-hidden="true">
         <div class="relative w-full h-full flex items-center justify-center">
+            
+            <!-- Previous Button -->
+            <button id="prevBtn" class="nav-arrow" aria-label="Previous Image">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" /></svg>
+            </button>
+            
+            <!-- Next Button -->
+            <button id="nextBtn" class="nav-arrow" aria-label="Next Image">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10"><path fill-rule="evenodd" d="M16.28 12.53a.75.75 0 000-1.06l-7.5-7.5a.75.75 0 00-1.06 1.06L14.69 12l-6.97 6.97a.75.75 0 101.06 1.06l7.5-7.5z" clip-rule="evenodd" /></svg>
+            </button>
+            
             <!-- Zoomable Image Container -->
             <img id="zoomImg" src="" alt="zoomed project image" class="max-w-full max-h-full object-contain cursor-grab transition-transform duration-100" style="transform-origin: center center;">
             
-            <!-- Controls Floating -->
-            <div class="absolute bottom-6 right-6 flex flex-col gap-3 bg-gray-800/80 p-3 rounded-xl shadow-2xl backdrop-blur-md">
-                <button class="fbtn bg-green-600 text-black hover:bg-green-500 transition-colors shadow-lg font-bold" id="zoomIn">Zoom +</button>
-                <button class="fbtn bg-green-600 text-black hover:bg-green-500 transition-colors shadow-lg font-bold" id="zoomOut">Zoom -</button>
-                <button class="fbtn bg-red-600 text-white hover:bg-red-500 transition-colors shadow-lg font-bold" id="closeModal">Close</button>
+            <!-- Controls Floating (Smaller, more discreet) -->
+            <div class="absolute bottom-6 right-6 fbtn-group" id="zoom-controls">
+                <button class="fbtn" id="zoomIn" title="Zoom In">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /><path d="M10 6a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5v-1.5A.75.75 0 0110 6z" /></svg>
+                </button>
+                <button class="fbtn" id="zoomOut" title="Zoom Out">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /><path d="M6.75 9.25a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z" /></svg>
+                </button>
+                <button class="fbtn bg-red-600/70 hover:bg-red-500" id="closeModal" title="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" /></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -325,33 +392,87 @@
         Loading Portfolio...
     </div>
 
-  <script>
+<script>
     // Utility for placeholder/fallback image URL
     const getPlaceholder = (text) => 
         `https://placehold.co/600x400/374151/white?text=${encodeURIComponent(text.substring(0, 30).trim().replace(/-/g, ' '))}`;
 
-    // --- PROJECT DATA STRUCTURE WITH CORRECTED RELATIVE PATHS ---
-    const DATA = {
-      "Building Constructions":{
-        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
-        images:[
-            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
-            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+    // --- PROJECT DATA STRUCTURE WITH CORRECTED RELATIVE PATHS ---
+    const DATA = {
+
+        "Interiors":{
+        desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
+        images:[
+            { src: "Images/All-Interiors/30.jpeg", tag: "mirror work" }, { src: "Images/All-Interiors/56.jpeg", tag: "eclectic mix" },
+            { src: "Images/All-Interiors/3.jpeg", tag: "bedroom modern" }, { src: "Images/All-Interiors/86.jpeg", tag: "retail store" }, 
+            { src: "Images/All-Interiors/91.jpeg", tag: "clubhouse interior" },{ src: "Images/All-Interiors/6.jpeg", tag: "wardrobe design" },
+            { src: "Images/All-Interiors/7.jpeg", tag: "commercial office" }, { src: "Images/All-Interiors/8.jpeg", tag: "tv unit panel" },
+            { src: "Images/All-Interiors/9.jpeg", tag: "wall texture" }, { src: "Images/All-Interiors/10.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/11.jpeg", tag: "residential bathroom" }, { src: "Images/All-Interiors/12.jpeg", tag: "staircase design" },
+            { src: "Images/All-Interiors/13.jpeg", tag: "wooden finish" }, { src: "Images/All-Interiors/14.jpeg", tag: "kids room" },
+            { src: "Images/All-Interiors/15.jpeg", tag: "pantry area" }, { src: "Images/All-Interiors/16.jpeg", tag: "bar counter" },
+            { src: "Images/All-Interiors/17.jpeg", tag: "study table" }, { src: "Images/All-Interiors/18.jpeg", tag: "home theater" },
+            { src: "Images/All-Interiors/19.jpeg", tag: "guest room" }, { src: "Images/All-Interiors/20.jpeg", tag: "master bedroom" },
+            { src: "Images/All-Interiors/21.jpeg", tag: "small apartment" }, { src: "Images/All-Interiors/22.jpeg", tag: "open plan" },
+            { src: "Images/All-Interiors/23.jpeg", tag: "partition wall" }, { src: "Images/All-Interiors/24.jpeg", tag: "ambient lighting" },
+            { src: "Images/All-Interiors/25.jpeg", tag: "balcony seating" }, { src: "Images/All-Interiors/26.jpeg", tag: "traditional motif" },
+            { src: "Images/All-Interiors/27.jpeg", tag: "storage solutions" }, { src: "Images/All-Interiors/28.jpeg", tag: "high end finish" },
+            { src: "Images/All-Interiors/29.jpeg", tag: "ceramic tile" }, { src: "Images/All-Interiors/1.jpeg", tag: "living room luxury" },
+            { src: "Images/All-Interiors/31.jpeg", tag: "lobby design" }, { src: "Images/All-Interiors/32.jpeg", tag: "reception area" },
+            { src: "Images/All-Interiors/33.jpeg", tag: "meeting room" }, { src: "Images/All-Interiors/34.jpeg", tag: "lounge seating" },
+            { src: "Images/All-Interiors/35.jpeg", tag: "executive cabin" }, { src: "Images/All-Interiors/36.jpeg", tag: "library design" },
+            { src: "Images/All-Interiors/37.jpeg", tag: "artwork placement" }, { src: "Images/All-Interiors/38.jpeg", tag: "texture play" },
+            { src: "Images/All-Interiors/39.jpeg", tag: "indoor plants" }, { src: "Images/All-Interiors/40.jpeg", tag: "natural light" },
+            { src: "Images/All-Interiors/41.jpeg", tag: "minimalist style" }, { src: "Images/All-Interiors/42.jpeg", tag: "color palette" },
+            { src: "Images/All-Interiors/43.jpeg", tag: "geometric patterns" }, { src: "Images/All-Interiors/44.jpeg", tag: "accent furniture" },
+            { src: "Images/All-Interiors/45.jpeg", tag: "floating shelves" }, { src: "Images/All-Interiors/46.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/47.jpeg", tag: "custom cabinetry" }, { src: "Images/All-Interiors/48.jpeg", tag: "marble flooring" },
+            { src: "Images/All-Interiors/49.jpeg", tag: "metal finishes" }, { src: "Images/All-Interiors/50.jpeg", tag: "contemporary" },
+            { src: "Images/All-Interiors/51.jpeg", tag: "classic design" }, { src: "Images/All-Interiors/52.jpeg", tag: "rustic charm" },
+            { src: "Images/All-Interiors/53.jpeg", tag: "industrial look" }, { src: "Images/All-Interiors/54.jpeg", tag: "scandinavian" },
+            { src: "Images/All-Interiors/55.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/2.jpeg", tag: "kitchen modular" },
+            { src: "Images/All-Interiors/57.jpeg", tag: "mid-century modern" }, { src: "Images/All-Interiors/58.jpeg", tag: "coastal theme" },
+            { src: "Images/All-Interiors/59.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/60.jpeg", tag: "north indian style" },
+            { src: "Images/All-Interiors/61.jpeg", tag: "maharashtrian design" }, { src: "Images/All-Interiors/62.jpeg", tag: "gujarati influence" },
+            { src: "Images/All-Interiors/63.jpeg", tag: "rajasthani elements" }, { src: "Images/All-Interiors/64.jpeg", tag: "punjabi interior" },
+            { src: "Images/All-Interiors/65.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/66.jpeg", tag: "bengali aesthetics" },
+            { src: "Images/All-Interiors/67.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/68.jpeg", tag: "kolkata flat" },
+            { src: "Images/All-Interiors/69.jpeg", tag: "mumbai apartment" }, { src: "Images/All-Interiors/70.jpeg", tag: "delhi villa" },
+            { src: "Images/All-Interiors/71.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/72.jpeg", tag: "Maharashtra is great" },
+            { src: "Images/All-Interiors/73.jpeg", tag: "pune property" }, { src: "Images/All-Interiors/74.jpeg", tag: "goa beach house" },
+            { src: "Images/All-Interiors/75.jpeg", tag: "office pantry" }, { src: "Images/All-Interiors/76.jpeg", tag: "conference room" },
+            { src: "Images/All-Interiors/77.jpeg", tag: "workstation design" }, { src: "Images/All-Interiors/78.jpeg", tag: "breakout area" },
+            { src: "Images/All-Interiors/79.jpeg", tag: "training room" }, { src: "Images/All-Interiors/80.jpeg", tag: "server room" },
+            { src: "Images/All-Interiors/81.jpeg", tag: "data center" }, { src: "Images/All-Interiors/82.jpeg", tag: "security cabin" },
+            { src: "Images/All-Interiors/83.jpeg", tag: "gym interior" }, { src: "Images/All-Interiors/84.jpeg", tag: "spa design" },
+            { src: "Images/All-Interiors/85.jpeg", tag: "salon interior" }, { src: "Images/All-Interiors/5.jpeg", tag: "entryway lighting" },
+            { src: "Images/All-Interiors/87.jpeg", tag: "boutique design" }, { src: "Images/All-Interiors/88.jpeg", tag: "restaurant design" },
+            { src: "Images/All-Interiors/89.jpeg", tag: "cafe interior" }, { src: "Images/All-Interiors/90.jpeg", tag: "bar lounge" },
+            { src: "Images/All-Interiors/93.jpeg", tag: "community hall" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
+            { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
+            { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
+
+           
+            
         ]
-      },
-      "Chiplun Temple (On-going)":{
-        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
-        images:[
-            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
-            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
-            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
-            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
-            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
+      },
+      "Exteriors":{
+        desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
+        images:[
+            { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
+            { src: "Images/Exteriors/c3.jpeg", tag: "apartment facade" }, { src: "Images/Exteriors/c4.jpeg", tag: "commercial building" },
+            { src: "Images/Exteriors/c5.jpeg", tag: "compound wall design" },{ src: "Images/Exteriors/c6.jpeg", tag: "balcony railing" } ,
+            { src: "Images/Exteriors/c14.jpeg", tag: "fountain feature" },{ src: "Images/Exteriors/c15.jpeg", tag: "landscape planning" },
+            { src: "Images/Exteriors/c11.jpeg", tag: "outdoor lighting" },{ src: "Images/Exteriors/c10.jpeg", tag: "driveway paver" },
+            { src: "Images/Exteriors/c1.jpeg", tag: "modern facade glass" }, { src: "Images/Exteriors/c12.jpeg", tag: "swimming pool" },
+            { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" },{ src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" },
+            { src: "Images/Exteriors/c8.jpeg", tag: "portico design" }
         ]
-      },
-      "Home interior and exterior":{
-        desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
-        images:[
+      },
+
+      "Home interior and exterior":{
+        desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
+        images:[
             { src: "Images/Home-Interior-and-exterior/fa.jpeg", tag: "kitchen interior modular modern" },
             { src: "Images/Home-Interior-and-exterior/la.jpeg", tag: "wardrobe bedroom interior storage" },
             { src: "Images/Home-Interior-and-exterior/za.jpeg", tag: "living room interior furniture" },
@@ -360,10 +481,10 @@
             { src: "Images/Home-Interior-and-exterior/sa.jpeg", tag: "dining area custom" },
             { src: "Images/Home-Interior-and-exterior/ta.jpeg", tag: "bathroom vanity tile" }
         ]
-      },
+      },
       "Temple interior and exterior":{
-        desc:"Specialized work in sacred architecture, covering both the devotional interior layout and the magnificent exterior stonework of temples across India.",
-        images:[
+        desc:"Specialized work in sacred architecture, covering both the devotional interior layout and the magnificent exterior stonework of temples across India.",
+        images:[
             { src: "Images/Temple-Interior-and-Exterior/abcd.jpeg", tag: "sacred carving stonework" },
             { src: "Images/Temple-Interior-and-Exterior/ac.jpeg", tag: "gopuram design architecture" },
             { src: "Images/Temple-Interior-and-Exterior/be.jpeg", tag: "interior mandap ceiling" },
@@ -379,18 +500,11 @@
             { src: "Images/Temple-Interior-and-Exterior/uvwx.jpeg", tag: "detailed carving" },
             { src: "Images/Temple-Interior-and-Exterior/yz.jpeg", tag: "final temple design" }
         ]
-      },
-      "Stone-structure for Tulsi":{
-        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
-        images:[
-            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
-            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
-            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
-        ]
-      },
-      "Farm House work":{
-        desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
-        images:[
+      },
+
+      "Farm House work":{
+        desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
+        images:[
             { src: "Images/Triangle-Shaped/aaa.jpeg", tag: "farmhouse rustic nature" },
             { src: "Images/Triangle-Shaped/ccc.jpeg", tag: "triangular structure unique" },
             { src: "Images/Triangle-Shaped/ddd.jpeg", tag: "exterior design spacious" },
@@ -413,76 +527,31 @@
             { src: "Images/Triangle-Shaped/triangle.jpeg", tag: "geometry unique" },
             { src: "Images/Triangle-Shaped/vvv.jpeg", tag: "natural materials" }
         ]
-      },
-      "Interiors":{
-        desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
-        images:[
-            { src: "Images/All-Interiors/1.jpeg", tag: "living room luxury" }, { src: "Images/All-Interiors/2.jpeg", tag: "kitchen modular" },
-            { src: "Images/All-Interiors/3.jpeg", tag: "bedroom modern" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
-            { src: "Images/All-Interiors/5.jpeg", tag: "entryway lighting" }, { src: "Images/All-Interiors/6.jpeg", tag: "wardrobe design" },
-            { src: "Images/All-Interiors/7.jpeg", tag: "commercial office" }, { src: "Images/All-Interiors/8.jpeg", tag: "tv unit panel" },
-            { src: "Images/All-Interiors/9.jpeg", tag: "wall texture" }, { src: "Images/All-Interiors/10.jpeg", tag: "false ceiling" },
-            { src: "Images/All-Interiors/11.jpeg", tag: "residential bathroom" }, { src: "Images/All-Interiors/12.jpeg", tag: "staircase design" },
-            { src: "Images/All-Interiors/13.jpeg", tag: "wooden finish" }, { src: "Images/All-Interiors/14.jpeg", tag: "kids room" },
-            { src: "Images/All-Interiors/15.jpeg", tag: "pantry area" }, { src: "Images/All-Interiors/16.jpeg", tag: "bar counter" },
-            { src: "Images/All-Interiors/17.jpeg", tag: "study table" }, { src: "Images/All-Interiors/18.jpeg", tag: "home theater" },
-            { src: "Images/All-Interiors/19.jpeg", tag: "guest room" }, { src: "Images/All-Interiors/20.jpeg", tag: "master bedroom" },
-            { src: "Images/All-Interiors/21.jpeg", tag: "small apartment" }, { src: "Images/All-Interiors/22.jpeg", tag: "open plan" },
-            { src: "Images/All-Interiors/23.jpeg", tag: "partition wall" }, { src: "Images/All-Interiors/24.jpeg", tag: "ambient lighting" },
-            { src: "Images/All-Interiors/25.jpeg", tag: "balcony seating" }, { src: "Images/All-Interiors/26.jpeg", tag: "traditional motif" },
-            { src: "Images/All-Interiors/27.jpeg", tag: "storage solutions" }, { src: "Images/All-Interiors/28.jpeg", tag: "high end finish" },
-            { src: "Images/All-Interiors/29.jpeg", tag: "ceramic tile" }, { src: "Images/All-Interiors/30.jpeg", tag: "mirror work" },
-            { src: "Images/All-Interiors/31.jpeg", tag: "lobby design" }, { src: "Images/All-Interiors/32.jpeg", tag: "reception area" },
-            { src: "Images/All-Interiors/33.jpeg", tag: "meeting room" }, { src: "Images/All-Interiors/34.jpeg", tag: "lounge seating" },
-            { src: "Images/All-Interiors/35.jpeg", tag: "executive cabin" }, { src: "Images/All-Interiors/36.jpeg", tag: "library design" },
-            { src: "Images/All-Interiors/37.jpeg", tag: "artwork placement" }, { src: "Images/All-Interiors/38.jpeg", tag: "texture play" },
-            { src: "Images/All-Interiors/39.jpeg", tag: "indoor plants" }, { src: "Images/All-Interiors/40.jpeg", tag: "natural light" },
-            { src: "Images/All-Interiors/41.jpeg", tag: "minimalist style" }, { src: "Images/All-Interiors/42.jpeg", tag: "color palette" },
-            { src: "Images/All-Interiors/43.jpeg", tag: "geometric patterns" }, { src: "Images/All-Interiors/44.jpeg", tag: "accent furniture" },
-            { src: "Images/All-Interiors/45.jpeg", tag: "floating shelves" }, { src: "Images/All-Interiors/46.jpeg", tag: "false ceiling" },
-            { src: "Images/All-Interiors/47.jpeg", tag: "custom cabinetry" }, { src: "Images/All-Interiors/48.jpeg", tag: "marble flooring" },
-            { src: "Images/All-Interiors/49.jpeg", tag: "metal finishes" }, { src: "Images/All-Interiors/50.jpeg", tag: "contemporary" },
-            { src: "Images/All-Interiors/51.jpeg", tag: "classic design" }, { src: "Images/All-Interiors/52.jpeg", tag: "rustic charm" },
-            { src: "Images/All-Interiors/53.jpeg", tag: "industrial look" }, { src: "Images/All-Interiors/54.jpeg", tag: "scandinavian" },
-            { src: "Images/All-Interiors/55.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/56.jpeg", tag: "eclectic mix" },
-            { src: "Images/All-Interiors/57.jpeg", tag: "mid-century modern" }, { src: "Images/All-Interiors/58.jpeg", tag: "coastal theme" },
-            { src: "Images/All-Interiors/59.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/60.jpeg", tag: "north indian style" },
-            { src: "Images/All-Interiors/61.jpeg", tag: "maharashtrian design" }, { src: "Images/All-Interiors/62.jpeg", tag: "gujarati influence" },
-            { src: "Images/All-Interiors/63.jpeg", tag: "rajasthani elements" }, { src: "Images/All-Interiors/64.jpeg", tag: "punjabi interior" },
-            { src: "Images/All-Interiors/65.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/66.jpeg", tag: "bengali aesthetics" },
-            { src: "Images/All-Interiors/67.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/68.jpeg", tag: "kolkata flat" },
-            { src: "Images/All-Interiors/69.jpeg", tag: "mumbai apartment" }, { src: "Images/All-Interiors/70.jpeg", tag: "delhi villa" },
-            { src: "Images/All-Interiors/71.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/72.jpeg", tag: "Maharashtra is great" },
-            { src: "Images/All-Interiors/73.jpeg", tag: "pune property" }, { src: "Images/All-Interiors/74.jpeg", tag: "goa beach house" },
-            { src: "Images/All-Interiors/75.jpeg", tag: "office pantry" }, { src: "Images/All-Interiors/76.jpeg", tag: "conference room" },
-            { src: "Images/All-Interiors/77.jpeg", tag: "workstation design" }, { src: "Images/All-Interiors/78.jpeg", tag: "breakout area" },
-            { src: "Images/All-Interiors/79.jpeg", tag: "training room" }, { src: "Images/All-Interiors/80.jpeg", tag: "server room" },
-            { src: "Images/All-Interiors/81.jpeg", tag: "data center" }, { src: "Images/All-Interiors/82.jpeg", tag: "security cabin" },
-            { src: "Images/All-Interiors/83.jpeg", tag: "gym interior" }, { src: "Images/All-Interiors/84.jpeg", tag: "spa design" },
-            { src: "Images/All-Interiors/85.jpeg", tag: "salon interior" }, { src: "Images/All-Interiors/86.jpeg", tag: "retail store" },
-            { src: "Images/All-Interiors/87.jpeg", tag: "boutique design" }, { src: "Images/All-Interiors/88.jpeg", tag: "restaurant design" },
-            { src: "Images/All-Interiors/89.jpeg", tag: "cafe interior" }, { src: "Images/All-Interiors/90.jpeg", tag: "bar lounge" },
-            { src: "Images/All-Interiors/91.jpeg", tag: "clubhouse interior" }, { src: "Images/All-Interiors/93.jpeg", tag: "community hall" },
-            { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
-            { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
+      },
+
+      "Chiplun Temple (On-going)":{
+        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
+        images:[
+            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
+            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
+            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
+            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
+            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
         ]
-      },
-      "Exteriors":{
-        desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
-        images:[
-            { src: "Images/Exteriors/c1.jpeg", tag: "modern facade glass" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
-            { src: "Images/Exteriors/c3.jpeg", tag: "apartment facade" }, { src: "Images/Exteriors/c4.jpeg", tag: "commercial building" },
-            { src: "Images/Exteriors/c5.jpeg", tag: "compound wall design" }, { src: "Images/Exteriors/c6.jpeg", tag: "balcony railing" },
-            { src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" }, { src: "Images/Exteriors/c8.jpeg", tag: "portico design" },
-            { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c10.jpeg", tag: "driveway paver" },
-            { src: "Images/Exteriors/c11.jpeg", tag: "outdoor lighting" }, { src: "Images/Exteriors/c12.jpeg", tag: "swimming pool" },
-            { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" }, { src: "Images/Exteriors/c14.jpeg", tag: "fountain feature" },
-            { src: "Images/Exteriors/c15.jpeg", tag: "landscape planning" }
+      },
+
+      "Stone-structure for Tulsi":{
+        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
+        images:[
+            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
+            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
+            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
         ]
-      },
+      },
+      
       "Real World 3D":{
-        desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
-        images:[
+        desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
+        images:[
             { src: "Images/3D-real-world/100.jpeg", tag: "visualization rendering 3D exterior" },
             { src: "Images/3D-real-world/101.jpeg", tag: "3D rendering modern house" },
             { src: "Images/3D-real-world/102.jpeg", tag: "client presentation view" },
@@ -498,8 +567,19 @@
             { src: "Images/3D-real-world/NR-HR-666.jpg", tag: "HR rendering facade" },
             { src: "Images/3D-real-world/NR-HR-888.jpg", tag: "HR rendering detail" }
         ]
-      }
-    };
+      },
+
+      "Building Constructions":{
+        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
+        images:[
+            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
+            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+        ]
+      }
+      
+    
+      
+    };
 
     // --- State & Initialization ---
 
@@ -525,12 +605,17 @@
     const zoomModal = document.getElementById('zoomModal');
     const zoomImg = document.getElementById('zoomImg');
     const loadingIndicator = document.getElementById('loading-indicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
     let currentCategory = null;
+    let currentFilteredProjects = ALL_PROJECTS; // The list of images currently visible in the gallery
+    let currentIndex = -1; // Index of the currently open image in currentFilteredProjects
     let zoomScale = 1;
     let isDragging = false;
     let startX, startY, currentX = 0, currentY = 0;
-
+    const SWIPE_THRESHOLD = 50;
+    let touchStartX = 0;
 
     // --- Router and Navigation (SPA Simulation) ---
     function navigate(viewId) {
@@ -549,16 +634,11 @@
             projectsView.classList.add('active');
             window.location.hash = '#projects';
             
-            // Ensure gallery is rendered when navigating to projects (initial load or category change)
-            if (!currentCategory) {
-                 renderPills(); // Initialize pills and first category
-            } else {
-                 filterGallery();
-            }
+            // CRITICAL FIX: Ensure pills are always rendered and filtered when navigating here
+            renderPills();
         }
     }
 
-    // Hash change handler to support browser back/forward buttons
     window.addEventListener('hashchange', () => {
         const hash = window.location.hash.replace('#', '');
         if (hash === 'projects') {
@@ -567,15 +647,17 @@
             navigate('home');
         }
     });
-
-    // Initial check for hash on page load
-    if (window.location.hash.includes('projects')) {
+    
+    // Initial view setup
+    const initialHash = window.location.hash.includes('projects');
+    if (initialHash) {
         homeView.classList.remove('active');
         projectsView.classList.add('active');
     } else {
         homeView.classList.add('active');
         projectsView.classList.remove('active');
     }
+
 
     // Attach Nav Events
     document.getElementById('nav-home').addEventListener('click', () => navigate('home'));
@@ -586,40 +668,40 @@
     // --- Gallery Logic ---
 
     function renderPills() {
-        // Set the first category as active initially
         const categories = Object.keys(DATA);
-        currentCategory = categories[0];
         
-        catList.innerHTML = ''; // Clear previous pills
+        // Set default category if none is selected
+        if (!currentCategory) {
+            currentCategory = categories[0];
+        }
         
-        categories.forEach((cat, idx) => {
+        catList.innerHTML = '';
+        
+        categories.forEach((cat) => {
             const b = document.createElement('button');
             b.className = 'pill-button';
-            if (idx === 0) b.classList.add('active');
+            if (cat === currentCategory) b.classList.add('active');
             b.textContent = cat;
             b.setAttribute('data-category', cat);
+            // Ensure filterGallery is called after category is set
             b.addEventListener('click', (e) => selectCategory(cat, e.target));
             catList.appendChild(b);
         });
 
-        // Initial render
-        selectCategory(currentCategory, catList.querySelector('.pill-button'));
+        // Always filter after rendering pills to ensure the gallery matches the active pill
+        filterGallery();
     }
 
     function selectCategory(cat, btn) {
         currentCategory = cat;
         
-        // Update pills
         document.querySelectorAll('.pill-button').forEach(p => p.classList.remove('active'));
         if (btn) btn.classList.add('active');
         
-        // Update description
         descEl.textContent = DATA[cat].desc || '';
         
-        // Clear search input on category change
         searchInput.value = '';
         
-        // Render filtered gallery
         filterGallery();
     }
 
@@ -631,15 +713,13 @@
         img.loading = 'lazy';
         img.src = project.src;
         img.alt = project.title;
-        // Fallback image source if the relative path is broken
         img.onerror = () => img.src = getPlaceholder(`Missing: ${project.src.split('/').pop()}`); 
 
-        // Attach modal open event
+        // Important: Attach the modal open event with the image src
         img.addEventListener('click', () => openModal(project.src));
 
         const caption = document.createElement('div');
         caption.className = 'caption';
-        // Display Project Title and the first few tags
         caption.innerHTML = `
             ${project.title}
             <div class="tag">${project.tags.split(' ').slice(0, 3).join(' | ')}</div>
@@ -654,137 +734,220 @@
         gallery.innerHTML = '';
         const searchTerm = searchInput.value.toLowerCase().trim();
         
-        const filteredProjects = ALL_PROJECTS.filter(project => {
-            // Filter by selected category 
-            const isCategoryMatch = !currentCategory || project.category === currentCategory;
-            // Filter by search term
-            const isSearchMatch = project.searchIndex.includes(searchTerm);
-            return isCategoryMatch && isSearchMatch;
-        });
+        // 1. Determine the source data based on the current category
+        const projectsInCurrentCategory = ALL_PROJECTS.filter(p => p.category === currentCategory);
 
-        if (filteredProjects.length === 0) {
+        // 2. Apply search filter
+        currentFilteredProjects = projectsInCurrentCategory.filter(project => 
+            project.searchIndex.includes(searchTerm)
+        );
+
+        if (currentFilteredProjects.length === 0) {
             gallery.innerHTML = '<p class="text-gray-500 col-span-full p-6 text-center text-lg">No projects found matching the selected category and search term. Try a different filter!</p>';
         } else {
-            filteredProjects.forEach(project => {
+            currentFilteredProjects.forEach(project => {
                 gallery.appendChild(createCard(project));
             });
         }
+        
+        // Update description based on the active category for visual confirmation
+        descEl.textContent = DATA[currentCategory]?.desc || 'Select a category to explore our wide range of work.';
     }
 
     // Attach Search Event 
     searchInput.addEventListener('input', filterGallery);
 
-    // --- Modal/Zoom Logic (Pan and Zoom) ---
-
-    function openModal(src) {
-        zoomImg.src = src; 
-        zoomScale = 1; 
-        currentX = 0; currentY = 0;
-        applyTransform();
-        zoomModal.classList.add('opacity-100', 'pointer-events-auto');
-        zoomModal.setAttribute('aria-hidden','false');
-    }
+    // --- Modal/Zoom/Navigation Logic ---
     
-    function closeModal() { 
-        zoomModal.classList.remove('opacity-100', 'pointer-events-auto'); 
-        zoomModal.setAttribute('aria-hidden','true'); 
+    // Resets zoom and pan state
+    function resetTransform() {
+        zoomScale = 1;
+        currentX = 0;
+        currentY = 0;
+        applyTransform();
+        zoomImg.style.cursor = 'grab';
     }
 
     function applyTransform() { 
         zoomImg.style.transform = `scale(${zoomScale}) translate(${currentX}px, ${currentY}px)`; 
     }
 
-    document.getElementById('zoomIn').addEventListener('click', () => { zoomScale = Math.min(zoomScale + 0.2, 5); applyTransform(); });
-    document.getElementById('zoomOut').addEventListener('click', () => { zoomScale = Math.max(zoomScale - 0.2, 0.5); if(zoomScale < 1) { currentX=0; currentY=0; } applyTransform(); });
-    document.getElementById('closeModal').addEventListener('click', closeModal);
+    function loadModalImage(src) {
+        zoomImg.src = src;
+        resetTransform();
+    }
 
-    // Close on backdrop click (ensures only click on the background closes it)
+    function openModal(src) {
+        // 1. Find the index of the clicked image in the current filtered list
+        currentIndex = currentFilteredProjects.findIndex(p => p.src === src);
+
+        // 2. Load the image and display modal
+        loadModalImage(src);
+        zoomModal.classList.add('opacity-100', 'pointer-events-auto');
+        zoomModal.setAttribute('aria-hidden','false');
+        
+        // 3. Update navigation buttons
+        updateNavButtonVisibility();
+    }
+    
+    function closeModal() { 
+        zoomModal.classList.remove('opacity-100', 'pointer-events-auto'); 
+        zoomModal.setAttribute('aria-hidden','true');
+        currentIndex = -1; 
+    }
+
+    function updateNavButtonVisibility() {
+        if (currentIndex <= 0) {
+            prevBtn.classList.add('hidden');
+        } else {
+            prevBtn.classList.remove('hidden');
+        }
+
+        if (currentIndex >= currentFilteredProjects.length - 1) {
+            nextBtn.classList.add('hidden');
+        } else {
+            nextBtn.classList.remove('hidden');
+        }
+    }
+
+    function navigateImage(direction) {
+        // direction: 1 for next, -1 for previous
+        if (currentFilteredProjects.length === 0 || currentIndex === -1) return;
+
+        let newIndex = currentIndex + direction;
+
+        if (newIndex >= 0 && newIndex < currentFilteredProjects.length) {
+            currentIndex = newIndex;
+            loadModalImage(currentFilteredProjects[currentIndex].src);
+        }
+        updateNavButtonVisibility();
+    }
+    
+    // Attach buttons events
+    document.getElementById('zoomIn').addEventListener('click', () => { zoomScale = Math.min(zoomScale + 0.2, 5); applyTransform(); });
+    document.getElementById('zoomOut').addEventListener('click', () => { zoomScale = Math.max(zoomScale - 0.2, 0.5); if(zoomScale < 1) { resetTransform(); } else { applyTransform(); } });
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    prevBtn.addEventListener('click', () => navigateImage(-1));
+    nextBtn.addEventListener('click', () => navigateImage(1));
+
+
+    // Close on backdrop click
     zoomModal.addEventListener('click', (e) => { 
-        // Check if the click target is the modal overlay itself
         if (e.target === zoomModal) { 
             closeModal(); 
         } 
     });
+    
+    // --- Touch/Mouse Pan & Zoom Logic ---
 
-    // Dragging events for panning (only active when zoomed in)
-    zoomImg.addEventListener('mousedown', (e) => {
+    // Mouse Down / Touch Start Handler
+    const startInteraction = (e) => {
         if (zoomScale > 1) {
+            // Prioritize PANNING if zoomed in
             e.preventDefault();
             isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
+            startX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+            startY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
             zoomImg.style.cursor = 'grabbing';
+        } else if (e.touches && e.touches.length === 1) {
+             // Prioritize SWIPE if not zoomed
+             touchStartX = e.touches[0].clientX;
         }
-    });
-    // Touch events for mobile dragging
-    zoomImg.addEventListener('touchstart', (e) => {
-        if (zoomScale > 1 && e.touches.length === 1) {
-            e.preventDefault();
-            isDragging = true;
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        }
-    });
+    };
+
+    zoomImg.addEventListener('mousedown', startInteraction);
+    zoomImg.addEventListener('touchstart', startInteraction, { passive: false });
 
     // Move Handler
-    const moveHandler = (e) => {
-        if (!isDragging || zoomScale <= 1) return;
-        
-        const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
-        const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+    const moveInteraction = (e) => {
+        if (isDragging && zoomScale > 1) {
+            const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+            const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
-        const dx = clientX - startX;
-        const dy = clientY - startY;
-        
-        currentX += dx;
-        currentY += dy;
-        
-        startX = clientX;
-        startY = clientY;
-        
-        applyTransform();
-    }
-
-    window.addEventListener('mousemove', moveHandler);
-    window.addEventListener('touchmove', moveHandler, { passive: false });
-
-
-    // End Drag Handler
-    const endDragHandler = () => {
-        if (isDragging) {
-            isDragging = false;
-            zoomImg.style.cursor = zoomScale > 1 ? 'grab' : 'default';
+            const dx = clientX - startX;
+            const dy = clientY - startY;
+            
+            currentX += dx;
+            currentY += dy;
+            
+            startX = clientX;
+            startY = clientY;
+            
+            applyTransform();
         }
     }
 
-    window.addEventListener('mouseup', endDragHandler);
-    window.addEventListener('touchend', endDragHandler);
+    window.addEventListener('mousemove', moveInteraction);
+    window.addEventListener('touchmove', moveInteraction, { passive: false });
+
+
+    // End Drag / Touch End Handler (Handles both Panning stop and Swipe detection)
+    const endInteraction = (e) => {
+        if (isDragging) {
+            // PANNING Stop
+            isDragging = false;
+            zoomImg.style.cursor = zoomScale > 1 ? 'grab' : 'default';
+        } else if (touchStartX !== 0 && zoomScale === 1 && e.changedTouches) {
+            // SWIPE detection (only if not panning and scale is 1)
+            const touchEndX = e.changedTouches[0].clientX;
+            const deltaX = touchEndX - touchStartX;
+            
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+                if (deltaX > 0) {
+                    navigateImage(-1); // Swiped right (show previous)
+                } else {
+                    navigateImage(1); // Swiped left (show next)
+                }
+            }
+        }
+        touchStartX = 0;
+    }
+
+    window.addEventListener('mouseup', endInteraction);
+    window.addEventListener('touchend', endInteraction);
 
     // Wheel zoom
     zoomImg.addEventListener('wheel', (e) => {
         e.preventDefault();
         const delta = -Math.sign(e.deltaY) * 0.2;
         zoomScale = Math.min(Math.max(0.5, zoomScale + delta), 8);
-        if(zoomScale < 1) { currentX=0; currentY=0; } 
+        if(zoomScale < 1) { resetTransform(); }
         applyTransform();
     }, { passive: false });
 
+    // Keyboard navigation (Escape to close, Arrows for nav)
+    window.addEventListener('keydown', (e) => {
+        if (zoomModal.classList.contains('opacity-100')) {
+            if (e.key === 'Escape') {
+                closeModal();
+            } else if (e.key === 'ArrowLeft') {
+                navigateImage(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateImage(1);
+            }
+        }
+    });
 
     // --- Initialization ---
     function initialize() {
-        // Show loading indicator briefly on load
         loadingIndicator.classList.add('opacity-100', 'pointer-events-auto');
         
-        // Delay to simulate asset loading, then initialize projects and hide loading
         setTimeout(() => {
-            if (window.location.hash.includes('projects')) {
+            // FIX: Set the initial category immediately
+            currentCategory = Object.keys(DATA)[0]; 
+
+            if (initialHash) {
+                // If starting directly on #projects, render pills
                 renderPills();
+            } else {
+                 // Even if starting on home view, filter the first category so currentFilteredProjects is ready for the modal
+                 filterGallery(); 
             }
             loadingIndicator.classList.remove('opacity-100', 'pointer-events-auto');
         }, 800); 
     }
 
     initialize();
-  </script>
+</script>
 </body>
 </html>
