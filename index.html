@@ -30,6 +30,13 @@
             overflow-x: hidden; 
         }
 
+        /* --- Keyframe Animation for Button Glow --- */
+        @keyframes subtle-pulse {
+            0% { box-shadow: 0 0 10px rgba(29, 185, 84, 0.6), 0 0 20px rgba(29, 185, 84, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(29, 185, 84, 0.8), 0 0 30px rgba(29, 185, 84, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(29, 185, 84, 0.6), 0 0 20px rgba(29, 185, 84, 0.3); }
+        }
+
         /* --- Layout & Routing Styles (SPA Simulation) --- */
         .app-container {
             max-width: 1200px;
@@ -58,6 +65,19 @@
             transform: translateX(-100%);
             opacity: 0;
             pointer-events: none;
+        }
+        
+        /* --- Navigation Button Enhancements (Top Right) --- */
+        #nav-projects {
+            /* Ensure the glow is applied and the pulse animation is running */
+            animation: subtle-pulse 3s infinite ease-in-out;
+            border: 2px solid var(--accent); /* Extra visual separation */
+            transition: var(--transition);
+        }
+        #nav-projects:hover {
+            background: #14a046; /* Slightly darker green on hover */
+            transform: scale(1.05); /* Pop out slightly */
+            box-shadow: 0 0 20px rgba(29, 185, 84, 1), 0 0 40px rgba(29, 185, 84, 0.7);
         }
         
         /* --- Hero Card (Architect Profile) --- */
@@ -367,7 +387,7 @@
                 
                 <div class="space-x-4 flex-shrink-0 nav-mobile-buttons">
                     <button id="nav-home" class="text-gray-400 hover:text-white transition-colors font-medium">Profile</button>
-                    <button id="nav-projects" class="text-black bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition-all font-bold shadow-md hover:shadow-green-500/50">
+                    <button id="nav-projects" class="text-black bg-green-600 px-4 py-2 rounded-lg font-bold shadow-lg shadow-green-600/50">
                         View Projects
                     </button>
                 </div>
@@ -412,7 +432,7 @@
                     <img src="Images/Home-Interior-and-exterior/na.jpeg" alt="Featured Work 1: Home Interior" class="featured-img rounded-lg" onclick="openModal('Images/Home-Interior-and-exterior/na.jpeg')">
                     <img src="Images/Triangle-Shaped/ccc.jpeg" alt="Featured Work 2: Farmhouse" class="featured-img rounded-lg" onclick="openModal('Images/Triangle-Shaped/ccc.jpeg')">
                 </div>
-                <button id="goto-projects-btn" class="w-full mt-8 view-projects px-6 py-4 bg-green-600 text-black font-extrabold rounded-lg text-lg shadow-xl shadow-green-600/30 hover:bg-green-500 transition-transform active:scale-95">
+                <button id="goto-projects-btn" class="w-full mt-8 view-projects px-6 py-4 bg-green-600 text-black font-extrabold rounded-lg text-lg shadow-xl shadow-green-600/30 hover:bg-green-500 transition-transform active:scale-95" style="animation: subtle-pulse 3s infinite ease-in-out; border: 2px solid var(--accent);">
                     View Complete Project Gallery →
                 </button>
             </div>
