@@ -26,6 +26,8 @@
             background: var(--bg);
             -webkit-font-smoothing: antialiased;
             scroll-behavior: smooth;
+            /* FIX: Ensure no unexpected horizontal overflow is visible */
+            overflow-x: hidden; 
         }
 
         /* --- Layout & Routing Styles (SPA Simulation) --- */
@@ -33,7 +35,7 @@
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            overflow-x: hidden;
+            /* overflow-x: hidden; - Removed, now handled by html, body */
             min-height: 100vh;
         }
         .view-panel {
@@ -303,14 +305,14 @@
             }
 
             .hero .info h1 {
-                /* Mobile fix: Ensure full name is displayed by reducing font size and allowing wrap */
-                font-size: 1.3rem; /* Reduced from 1.5rem for full name visibility */
-                line-height: 1.3;
-                white-space: normal; /* Allow text to wrap */
-                overflow: visible; 
-                text-overflow: initial;
+                font-size: 1.5rem; 
+                line-height: 1.2;
+                white-space: nowrap;
+                /* Allow overflow for safety, but rely on font size reduction */
+                overflow: hidden; 
+                text-overflow: ellipsis;
                 width: 100%;
-                text-align: center; 
+                text-align: center; /* Ensure name is centered */
             }
             
             .hero .info .role,
@@ -338,13 +340,10 @@
 <body>
     <div class="app-container">
         
-        <!-- Navbar/Header (Stays visible across both views) -->
         <nav class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-sm p-4 shadow-2xl">
             <div class="flex justify-between items-center max-w-7xl mx-auto">
-                <!-- Title: Always takes full width on mobile due to flex-direction: column in media query -->
                 <h1 class="text-xl font-bold text-white tracking-widest"> <span class="text-green-600"> ARCH. </span>S. R. KOUNDARKAR </h1>
                 
-                <!-- New Wrapper for Mobile Button Alignment -->
                 <div class="space-x-4 flex-shrink-0 nav-mobile-buttons">
                     <button id="nav-home" class="text-gray-400 hover:text-white transition-colors font-medium">Profile</button>
                     <button id="nav-projects" class="text-black bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition-all font-bold shadow-md hover:shadow-green-500/50">
@@ -354,38 +353,30 @@
             </div>
         </nav>
 
-        <!-- Home View -->
         <section class="view-panel active" id="home-view">
             <div class="hero">
                 <div class="portrait">
-                    <!-- Profile Image Path -->
                     <img src="Images/Sanjay.jpeg" alt="Architect Sanjay R. Koundarkar Portrait" onerror="this.onerror=null;this.src='https://placehold.co/250x250/374151/white?text=Portrait+Missing';"> 
                 </div>
                 <div class="info">
-                    <!-- Text is centered via parent .info styles in mobile media query -->
                     <h1 class="text-3xl sm:text-4xl font-extrabold">Mr. Sanjay Rajendra Koundarkar</h1>
                     <div class="text-xl role"><span class="text-yellow-600"><bold>Architect | Residential, Commercial, Temple Interior & Exterior</bold></span></div>
                 
-                    <!-- Description is centered via parent .info styles -->
                     <p class="desc mt-3 text-gray-300">
                         Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">18 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
                     </p>
                     
-                    <!-- Button group is centered via parent .info styles -->
                     <div class="flex flex-wrap gap-3 mt-6">
-                        <!-- Contact Button (Phone) -->
                         <a href="tel:+919890542067" class="flex items-center space-x-2 px-4 py-3 rounded-full bg-gray-700 text-green-400 font-bold hover:bg-gray-600 transition-all shadow-lg active:scale-95">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.373 18 2 12.627 2 6V3z" /></svg>
                             <span>Call: +91 98905 42067</span>
                         </a>
                         
-                        <!-- WhatsApp Button (Highlighted) -->
                         <a href="https://wa.me/919890542067" target="_blank" class="flex items-center space-x-2 px-4 py-3 rounded-full bg-green-600 text-black font-extrabold hover:bg-green-500 transition-all shadow-xl shadow-green-600/50 active:scale-95">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12.036 2.015c-5.52 0-9.99 4.47-9.99 9.99 0 1.76-.45 3.39-1.22 4.83l-1.82 6.6 6.75-1.77c1.47.78 3.16 1.22 4.67 1.22 5.52 0 9.99-4.47 9.99-9.99s-4.47-9.99-9.99-9.99zm-4.75 5.5l-.35.85c-.34.82-.53 1.69-.53 2.59 0 3.32 2.7 6.02 6.02 6.02 1.54 0 3-.56 4.1-1.5l.38-.34-.8-.92-.22-.27c-.85.83-1.89 1.28-3.05 1.28-2.3 0-4.17-1.87-4.17-4.17 0-.9.28-1.74.77-2.45l.28-.43-.8-.92c-.37-.4-.84-.87-1.37-1.37zm1.6 3.92c.1.25.1.52 0 .77l-.63 1.5c-.09.22-.09.46 0 .68l.2.46c.14.3.4.5.7.5.3 0 .56-.1.7-.4l.63-1.5c.09-.22.09-.46 0-.68l-.2-.46c-.14-.3-.4-.5-.7-.5-.3 0-.56.1-.7.4z" fill="#000"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.036 2.015c-5.52 0-9.99 4.47-9.99 9.99 0 1.76-.45 3.39-1.22 4.83l-1.82 6.6 6.75-1.77c1.47.78 3.16 1.22 4.67 1.22 5.52 0 9.99-4.47 9.99-9.99s-4.47-9.99-9.99-9.99zm-4.75 5.5l-.35.85c-.34.82-.53 1.69-.53 2.59 0 3.32 2.7 6.02 6.02 6.02 1.54 0 3-.56 4.1-1.5l.38-.34-.8-.92-.22-.27c-.85.83-1.89 1.28-3.05 1.28-2.3 0-4.17-1.87-4.17-4.17 0-.9.28-1.74.77-2.45l.28-.43-.8-.92c-.37-.4-.84-.87-1.37-1.37zm1.6 3.92c.1.25.1.52 0 .77l-.63 1.5c-.09.22-.09.46 0 .68l.2.46c.14.3.4.5.7.5.3 0 .56-.1.7-.4l.63-1.5c.09-.22.09-.46 0-.68l-.2-.46c-.14-.3-.4-.5-.7-.5-.3 0-.56.1-.7.4z" fill="#000"/></svg>
                             <span>WhatsApp Now</span>
                         </a>
                         
-                        <!-- Location (Badge) -->
                         <div class="flex items-center space-x-2 px-4 py-3 rounded-full bg-gray-800 text-gray-400 font-medium border border-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
                             <span>Based in Chiplun, India</span>
@@ -397,9 +388,7 @@
             <div class="mt-10">
                 <h2 class="text-2xl font-bold mb-4 text-white border-l-4 border-green-600 pl-3">Popular Featured Works</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Featured Image 1 -->
                     <img src="Images/Home-Interior-and-exterior/na.jpeg" alt="Featured Work 1: Home Interior" class="featured-img rounded-lg" onclick="openModal('Images/Home-Interior-and-exterior/na.jpeg')">
-                    <!-- Featured Image 2 -->
                     <img src="Images/Triangle-Shaped/ccc.jpeg" alt="Featured Work 2: Farmhouse" class="featured-img rounded-lg" onclick="openModal('Images/Triangle-Shaped/ccc.jpeg')">
                 </div>
                 <button id="goto-projects-btn" class="w-full mt-8 view-projects px-6 py-4 bg-green-600 text-black font-extrabold rounded-lg text-lg shadow-xl shadow-green-600/30 hover:bg-green-500 transition-transform active:scale-95">
@@ -408,23 +397,20 @@
             </div>
         </section>
 
-        <!-- Projects View -->
         <section id="projects-view" class="view-panel">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-3">
-                <h2 class="text-2xl font-bold text-white">PROJECT GALLERY</h2>
+                <h2 class="text-3xl font-bold text-white">Project Gallery</h2>
                 <button id="back-to-home-btn" class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
                     <span>Back to Profile</span>
                 </button>
             </div>
 
-            <!-- Controls Bar: Category Pills & Search -->
             <div class="controls-bar">
                 <div class="flex flex-wrap items-center gap-2">
                     <span class="text-sm text-white font-semibold flex-shrink-0">Filter by:</span>
                     <div id="category-list" class="flex flex-wrap gap-2">
-                        <!-- Pills generated by JS -->
-                    </div>
+                        </div>
                 </div>
                 <input type="text" id="project-search" placeholder="Search projects by tag or title..." class="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:border-green-500 focus:ring focus:ring-green-500/50 transition-all">
             </div>
@@ -432,30 +418,24 @@
             <p id="description" class="text-gray-400 mb-6 border-l-4 border-green-600 pl-3 italic">Select a category to explore our wide range of work.</p>
 
             <div class="gallery" id="gallery">
-                <!-- Project Cards generated by JS -->
-            </div>
+                </div>
         </section>
 
     </div>
 
-    <!-- Image Zoom Modal (Advanced with Navigation) -->
     <div class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none" id="zoomModal" aria-hidden="true">
         <div class="relative w-full h-full flex items-center justify-center">
             
-            <!-- Previous Button -->
             <button id="prevBtn" class="nav-arrow" aria-label="Previous Image">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10"><path fill-rule="evenodd" d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z" clip-rule="evenodd" /></svg>
             </button>
             
-            <!-- Next Button -->
             <button id="nextBtn" class="nav-arrow" aria-label="Next Image">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10"><path fill-rule="evenodd" d="M16.28 12.53a.75.75 0 000-1.06l-7.5-7.5a.75.75 0 00-1.06 1.06L14.69 12l-6.97 6.97a.75.75 0 101.06 1.06l7.5-7.5z" clip-rule="evenodd" /></svg>
             </button>
             
-            <!-- Zoomable Image Container -->
             <img id="zoomImg" src="" alt="zoomed project image" class="max-w-full max-h-full object-contain cursor-grab transition-transform duration-100" style="transform-origin: center center;">
             
-            <!-- Controls Floating (Smaller, more discreet) -->
             <div class="absolute bottom-6 right-6 fbtn-group" id="zoom-controls">
                 <button class="fbtn" id="zoomIn" title="Zoom In">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" /><path d="M10 6a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5v-1.5A.75.75 0 0110 6z" /></svg>
@@ -470,10 +450,9 @@
         </div>
     </div>
     
-    <!-- Loading Indicator -->
     <div id="loading-indicator" class="fixed inset-0 bg-gray-900/90 z-[60] flex flex-col items-center justify-center text-white text-lg transition-opacity duration-300 pointer-events-none opacity-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin -ml-1 mr-3 h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-        Excellent Work loading...
+        Loading Portfolio...
     </div>
 
 <script>
@@ -482,8 +461,7 @@
         `https://placehold.co/600x400/374151/white?text=${encodeURIComponent(text.substring(0, 30).trim().replace(/-/g, ' '))}`;
 
     // --- PROJECT DATA STRUCTURE WITH CORRECTED RELATIVE PATHS ---
-     const DATA = {
-
+    const DATA = {
         "Interiors":{
         desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
         images:[
@@ -535,12 +513,9 @@
             { src: "Images/All-Interiors/93.jpeg", tag: "community hall" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
             { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
             { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
-
-           
-            
         ]
-      },
-      "Exteriors":{
+        },
+        "Exteriors":{
         desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
         images:[
             { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
@@ -552,119 +527,109 @@
             { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" },{ src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" },
             { src: "Images/Exteriors/c8.jpeg", tag: "portico design" }
         ]
-      },
-
-      "Home interior and exterior":{
-        desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
-        images:[
-            { src: "Images/Home-Interior-and-exterior/fa.jpeg", tag: "kitchen interior modular modern" },
-            { src: "Images/Home-Interior-and-exterior/la.jpeg", tag: "wardrobe bedroom interior storage" },
-            { src: "Images/Home-Interior-and-exterior/za.jpeg", tag: "living room interior furniture" },
-            { src: "Images/Home-Interior-and-exterior/na.jpeg", tag: "modern facade exterior lighting" },
-            { src: "Images/Home-Interior-and-exterior/qa.jpeg", tag: "balcony design landscape" },
-            { src: "Images/Home-Interior-and-exterior/sa.jpeg", tag: "dining area custom" },
-            { src: "Images/Home-Interior-and-exterior/ta.jpeg", tag: "bathroom vanity tile" }
-        ]
-      },
-      "Temple interior and exterior":{
-        desc:"Specialized work in sacred architecture, covering both the devotional interior layout and the magnificent exterior stonework of temples across India.",
-        images:[
-            { src: "Images/Temple-Interior-and-Exterior/abcd.jpeg", tag: "sacred carving stonework" },
-            { src: "Images/Temple-Interior-and-Exterior/ac.jpeg", tag: "gopuram design architecture" },
-            { src: "Images/Temple-Interior-and-Exterior/be.jpeg", tag: "interior mandap ceiling" },
-            { src: "Images/Temple-Interior-and-Exterior/de.jpeg", tag: "exterior detail stone" },
-            { src: "Images/Temple-Interior-and-Exterior/efgh.jpeg", tag: "traditional design vastu" },
-            { src: "Images/Temple-Interior-and-Exterior/ijkl.jpeg", tag: "pillar detail craftsmanship" },
-            { src: "Images/Temple-Interior-and-Exterior/mnop.jpeg", tag: "temple entrance facade" },
-            { src: "Images/Temple-Interior-and-Exterior/ol.jpeg", tag: "altar design" },
-            { src: "Images/Temple-Interior-and-Exterior/op.jpeg", tag: "prayer hall interior" },
-            { src: "Images/Temple-Interior-and-Exterior/pq.jpeg", tag: "shikhara view" },
-            { src: "Images/Temple-Interior-and-Exterior/qrst.jpeg", tag: "stone facade exterior" },
-            { src: "Images/Temple-Interior-and-Exterior/sq.jpeg", tag: "interior lighting" },
-            { src: "Images/Temple-Interior-and-Exterior/uvwx.jpeg", tag: "detailed carving" },
-            { src: "Images/Temple-Interior-and-Exterior/yz.jpeg", tag: "final temple design" }
-        ]
-      },
-
-      "Farm House work":{
-        desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
-        images:[
-            { src: "Images/Triangle-Shaped/aaa.jpeg", tag: "farmhouse rustic nature" },
-            { src: "Images/Triangle-Shaped/ccc.jpeg", tag: "triangular structure unique" },
-            { src: "Images/Triangle-Shaped/ddd.jpeg", tag: "exterior design spacious" },
-            { src: "Images/Triangle-Shaped/eee.jpeg", tag: "wooden cabin" },
-            { src: "Images/Triangle-Shaped/fff.jpeg", tag: "modern barn" },
-            { src: "Images/Triangle-Shaped/ggg.jpeg", tag: "landscape integration" },
-            { src: "Images/Triangle-Shaped/hdu.jpeg", tag: "terrace view" },
-            { src: "Images/Triangle-Shaped/hhh.jpeg", tag: "large windows" },
-            { src: "Images/Triangle-Shaped/hjk.jpeg", tag: "poolside view" },
-            { src: "Images/Triangle-Shaped/iii.jpeg", tag: "interior rustic" },
-            { src: "Images/Triangle-Shaped/jjj.jpeg", tag: "kitchen farmhouse" },
-            { src: "Images/Triangle-Shaped/kkk.jpeg", tag: "bedroom retreat" },
-            { src: "Images/Triangle-Shaped/lll.jpeg", tag: "open concept" },
-            { src: "Images/Triangle-Shaped/qqqq.jpeg", tag: "stone facade" },
-            { src: "Images/Triangle-Shaped/nnn.jpeg", tag: "roof design" },
-            { src: "Images/Triangle-Shaped/ooo.jpeg", tag: "modern farmhouse" },
-            { src: "Images/Triangle-Shaped/ppp.jpeg", tag: "garden planning" },
-            { src: "Images/Triangle-Shaped/qqq.jpeg", tag: "patio design" },
-            { src: "Images/Triangle-Shaped/rrr.jpeg", tag: "sunset view" },
-            { src: "Images/Triangle-Shaped/triangle.jpeg", tag: "geometry unique" },
-            { src: "Images/Triangle-Shaped/vvv.jpeg", tag: "natural materials" }
-        ]
-      },
-
-      "Chiplun Temple (On-going)":{
-        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
-        images:[
-            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
-            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
-            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
-            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
-            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
-        ]
-      },
-
-      "Stone-structure for Tulsi":{
-        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
-        images:[
-            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
-            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
-            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
-        ]
-      },
-      
-      "Real World 3D":{
-        desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
-        images:[
-            { src: "Images/3D-real-world/100.jpeg", tag: "visualization rendering 3D exterior" },
-            { src: "Images/3D-real-world/101.jpeg", tag: "3D rendering modern house" },
-            { src: "Images/3D-real-world/102.jpeg", tag: "client presentation view" },
-            { src: "Images/3D-real-world/103.jpeg", tag: "pre-construction review" },
-            { src: "Images/3D-real-world/104.jpeg", tag: "night view rendering" },
-            { src: "Images/3D-real-world/105.jpeg", tag: "interior visualization" },
-            { src: "Images/3D-real-world/106.jpeg", tag: "landscape 3D model" },
-            { src: "Images/3D-real-world/107.jpeg", tag: "commercial 3D" },
-            { src: "Images/3D-real-world/108.jpeg", tag: "apartment rendering" },
-            { src: "Images/3D-real-world/109.jpeg", tag: "architectural model" },
-            { src: "Images/3D-real-world/NR-HR-111.jpg", tag: "high resolution rendering" },
-            { src: "Images/3D-real-world/NR-HR-444.jpg", tag: "HR rendering commercial" },
-            { src: "Images/3D-real-world/NR-HR-666.jpg", tag: "HR rendering facade" },
-            { src: "Images/3D-real-world/NR-HR-888.jpg", tag: "HR rendering detail" }
-        ]
-      },
-
-      "Building Constructions":{
-        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
-        images:[
-            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
-            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
-        ]
-      }
-      
-    
-      
+        },
+        "Home interior and exterior":{
+            desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
+            images:[
+                { src: "Images/Home-Interior-and-exterior/fa.jpeg", tag: "kitchen interior modular modern" },
+                { src: "Images/Home-Interior-and-exterior/la.jpeg", tag: "wardrobe bedroom interior storage" },
+                { src: "Images/Home-Interior-and-exterior/za.jpeg", tag: "living room interior furniture" },
+                { src: "Images/Home-Interior-and-exterior/na.jpeg", tag: "modern facade exterior lighting" },
+                { src: "Images/Home-Interior-and-exterior/qa.jpeg", tag: "balcony design landscape" },
+                { src: "Images/Home-Interior-and-exterior/sa.jpeg", tag: "dining area custom" },
+                { src: "Images/Home-Interior-and-exterior/ta.jpeg", tag: "bathroom vanity tile" }
+            ]
+        },
+        "Temple interior and exterior":{
+            desc:"Specialized work in sacred architecture, covering both the devotional interior layout and the magnificent exterior stonework of temples across India.",
+            images:[
+                { src: "Images/Temple-Interior-and-Exterior/abcd.jpeg", tag: "sacred carving stonework" },
+                { src: "Images/Temple-Interior-and-Exterior/ac.jpeg", tag: "gopuram design architecture" },
+                { src: "Images/Temple-Interior-and-Exterior/be.jpeg", tag: "interior mandap ceiling" },
+                { src: "Images/Temple-Interior-and-Exterior/de.jpeg", tag: "exterior detail stone" },
+                { src: "Images/Temple-Interior-and-Exterior/efgh.jpeg", tag: "traditional design vastu" },
+                { src: "Images/Temple-Interior-and-Exterior/ijkl.jpeg", tag: "pillar detail craftsmanship" },
+                { src: "Images/Temple-Interior-and-Exterior/mnop.jpeg", tag: "temple entrance facade" },
+                { src: "Images/Temple-Interior-and-Exterior/ol.jpeg", tag: "altar design" },
+                { src: "Images/Temple-Interior-and-Exterior/op.jpeg", tag: "prayer hall interior" },
+                { src: "Images/Temple-Interior-and-Exterior/pq.jpeg", tag: "shikhara view" },
+                { src: "Images/Temple-Interior-and-Exterior/qrst.jpeg", tag: "stone facade exterior" },
+                { src: "Images/Temple-Interior-and-Exterior/sq.jpeg", tag: "interior lighting" },
+                { src: "Images/Temple-Interior-and-Exterior/uvwx.jpeg", tag: "detailed carving" },
+                { src: "Images/Temple-Interior-and-Exterior/yz.jpeg", tag: "final temple design" }
+            ]
+        },
+        "Farm House work":{
+            desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
+            images:[
+                { src: "Images/Triangle-Shaped/aaa.jpeg", tag: "farmhouse rustic nature" },
+                { src: "Images/Triangle-Shaped/ccc.jpeg", tag: "triangular structure unique" },
+                { src: "Images/Triangle-Shaped/ddd.jpeg", tag: "exterior design spacious" },
+                { src: "Images/Triangle-Shaped/eee.jpeg", tag: "wooden cabin" },
+                { src: "Images/Triangle-Shaped/fff.jpeg", tag: "modern barn" },
+                { src: "Images/Triangle-Shaped/ggg.jpeg", tag: "landscape integration" },
+                { src: "Images/Triangle-Shaped/hdu.jpeg", tag: "terrace view" },
+                { src: "Images/Triangle-Shaped/hhh.jpeg", tag: "large windows" },
+                { src: "Images/Triangle-Shaped/hjk.jpeg", tag: "poolside view" },
+                { src: "Images/Triangle-Shaped/iii.jpeg", tag: "interior rustic" },
+                { src: "Images/Triangle-Shaped/jjj.jpeg", tag: "kitchen farmhouse" },
+                { src: "Images/Triangle-Shaped/kkk.jpeg", tag: "bedroom retreat" },
+                { src: "Images/Triangle-Shaped/lll.jpeg", tag: "open concept" },
+                { src: "Images/Triangle-Shaped/qqqq.jpeg", tag: "stone facade" },
+                { src: "Images/Triangle-Shaped/nnn.jpeg", tag: "roof design" },
+                { src: "Images/Triangle-Shaped/ooo.jpeg", tag: "modern farmhouse" },
+                { src: "Images/Triangle-Shaped/ppp.jpeg", tag: "garden planning" },
+                { src: "Images/Triangle-Shaped/qqq.jpeg", tag: "patio design" },
+                { src: "Images/Triangle-Shaped/rrr.jpeg", tag: "sunset view" },
+                { src: "Images/Triangle-Shaped/triangle.jpeg", tag: "geometry unique" },
+                { src: "Images/Triangle-Shaped/vvv.jpeg", tag: "natural materials" }
+            ]
+        },
+        "Chiplun Temple (On-going)":{
+            desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
+            images:[
+                { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
+                { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
+                { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
+                { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
+                { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
+            ]
+        },
+        "Stone-structure for Tulsi":{
+            desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
+            images:[
+                { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
+                { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
+                { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
+            ]
+        },
+        "Real World 3D":{
+            desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
+            images:[
+                { src: "Images/3D-real-world/100.jpeg", tag: "visualization rendering 3D exterior" },
+                { src: "Images/3D-real-world/101.jpeg", tag: "3D rendering modern house" },
+                { src: "Images/3D-real-world/102.jpeg", tag: "client presentation view" },
+                { src: "Images/3D-real-world/103.jpeg", tag: "pre-construction review" },
+                { src: "Images/3D-real-world/104.jpeg", tag: "night view rendering" },
+                { src: "Images/3D-real-world/105.jpeg", tag: "interior visualization" },
+                { src: "Images/3D-real-world/106.jpeg", tag: "landscape 3D model" },
+                { src: "Images/3D-real-world/107.jpeg", tag: "commercial 3D" },
+                { src: "Images/3D-real-world/108.jpeg", tag: "apartment rendering" },
+                { src: "Images/3D-real-world/109.jpeg", tag: "architectural model" },
+                { src: "Images/3D-real-world/NR-HR-111.jpg", tag: "high resolution rendering" },
+                { src: "Images/3D-real-world/NR-HR-444.jpg", tag: "HR rendering commercial" },
+                { src: "Images/3D-real-world/NR-HR-666.jpg", tag: "HR rendering facade" },
+                { src: "Images/3D-real-world/NR-HR-888.jpg", tag: "HR rendering detail" }
+            ]
+        },
+        "Building Constructions":{
+            desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
+            images:[
+                { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
+                { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+            ]
+        }
     };
-    
     // --- State & Initialization ---
 
     // Flatten data for search indexing
@@ -1035,5 +1000,3 @@
 </script>
 </body>
 </html>
-
-
