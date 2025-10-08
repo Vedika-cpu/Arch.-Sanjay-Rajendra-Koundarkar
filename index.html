@@ -411,7 +411,7 @@
         <!-- Projects View -->
         <section id="projects-view" class="view-panel">
             <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-3">
-                <h2 class="text-3xl font-bold text-white">Project Gallery</h2>
+                <h2 class="text-3xl font-bold text-white">PROJECT GALLERY</h2>
                 <button id="back-to-home-btn" class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
                     <span>Back to Profile</span>
@@ -473,7 +473,7 @@
     <!-- Loading Indicator -->
     <div id="loading-indicator" class="fixed inset-0 bg-gray-900/90 z-[60] flex flex-col items-center justify-center text-white text-lg transition-opacity duration-300 pointer-events-none opacity-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin -ml-1 mr-3 h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-        Loading Portfolio...
+        Excellent Work...
     </div>
 
 <script>
@@ -482,25 +482,79 @@
         `https://placehold.co/600x400/374151/white?text=${encodeURIComponent(text.substring(0, 30).trim().replace(/-/g, ' '))}`;
 
     // --- PROJECT DATA STRUCTURE WITH CORRECTED RELATIVE PATHS ---
-    const DATA = {
-      "Building Constructions":{
-        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
+     const DATA = {
+
+        "Interiors":{
+        desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
         images:[
-            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
-            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+            { src: "Images/All-Interiors/30.jpeg", tag: "mirror work" }, { src: "Images/All-Interiors/56.jpeg", tag: "eclectic mix" },
+            { src: "Images/All-Interiors/3.jpeg", tag: "bedroom modern" }, { src: "Images/All-Interiors/86.jpeg", tag: "retail store" }, 
+            { src: "Images/All-Interiors/91.jpeg", tag: "clubhouse interior" },{ src: "Images/All-Interiors/6.jpeg", tag: "wardrobe design" },
+            { src: "Images/All-Interiors/7.jpeg", tag: "commercial office" }, { src: "Images/All-Interiors/8.jpeg", tag: "tv unit panel" },
+            { src: "Images/All-Interiors/9.jpeg", tag: "wall texture" }, { src: "Images/All-Interiors/10.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/11.jpeg", tag: "residential bathroom" }, { src: "Images/All-Interiors/12.jpeg", tag: "staircase design" },
+            { src: "Images/All-Interiors/13.jpeg", tag: "wooden finish" }, { src: "Images/All-Interiors/14.jpeg", tag: "kids room" },
+            { src: "Images/All-Interiors/15.jpeg", tag: "pantry area" }, { src: "Images/All-Interiors/16.jpeg", tag: "bar counter" },
+            { src: "Images/All-Interiors/17.jpeg", tag: "study table" }, { src: "Images/All-Interiors/18.jpeg", tag: "home theater" },
+            { src: "Images/All-Interiors/19.jpeg", tag: "guest room" }, { src: "Images/All-Interiors/20.jpeg", tag: "master bedroom" },
+            { src: "Images/All-Interiors/21.jpeg", tag: "small apartment" }, { src: "Images/All-Interiors/22.jpeg", tag: "open plan" },
+            { src: "Images/All-Interiors/23.jpeg", tag: "partition wall" }, { src: "Images/All-Interiors/24.jpeg", tag: "ambient lighting" },
+            { src: "Images/All-Interiors/25.jpeg", tag: "balcony seating" }, { src: "Images/All-Interiors/26.jpeg", tag: "traditional motif" },
+            { src: "Images/All-Interiors/27.jpeg", tag: "storage solutions" }, { src: "Images/All-Interiors/28.jpeg", tag: "high end finish" },
+            { src: "Images/All-Interiors/29.jpeg", tag: "ceramic tile" }, { src: "Images/All-Interiors/1.jpeg", tag: "living room luxury" },
+            { src: "Images/All-Interiors/31.jpeg", tag: "lobby design" }, { src: "Images/All-Interiors/32.jpeg", tag: "reception area" },
+            { src: "Images/All-Interiors/33.jpeg", tag: "meeting room" }, { src: "Images/All-Interiors/34.jpeg", tag: "lounge seating" },
+            { src: "Images/All-Interiors/35.jpeg", tag: "executive cabin" }, { src: "Images/All-Interiors/36.jpeg", tag: "library design" },
+            { src: "Images/All-Interiors/37.jpeg", tag: "artwork placement" }, { src: "Images/All-Interiors/38.jpeg", tag: "texture play" },
+            { src: "Images/All-Interiors/39.jpeg", tag: "indoor plants" }, { src: "Images/All-Interiors/40.jpeg", tag: "natural light" },
+            { src: "Images/All-Interiors/41.jpeg", tag: "minimalist style" }, { src: "Images/All-Interiors/42.jpeg", tag: "color palette" },
+            { src: "Images/All-Interiors/43.jpeg", tag: "geometric patterns" }, { src: "Images/All-Interiors/44.jpeg", tag: "accent furniture" },
+            { src: "Images/All-Interiors/45.jpeg", tag: "floating shelves" }, { src: "Images/All-Interiors/46.jpeg", tag: "false ceiling" },
+            { src: "Images/All-Interiors/47.jpeg", tag: "custom cabinetry" }, { src: "Images/All-Interiors/48.jpeg", tag: "marble flooring" },
+            { src: "Images/All-Interiors/49.jpeg", tag: "metal finishes" }, { src: "Images/All-Interiors/50.jpeg", tag: "contemporary" },
+            { src: "Images/All-Interiors/51.jpeg", tag: "classic design" }, { src: "Images/All-Interiors/52.jpeg", tag: "rustic charm" },
+            { src: "Images/All-Interiors/53.jpeg", tag: "industrial look" }, { src: "Images/All-Interiors/54.jpeg", tag: "scandinavian" },
+            { src: "Images/All-Interiors/55.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/2.jpeg", tag: "kitchen modular" },
+            { src: "Images/All-Interiors/57.jpeg", tag: "mid-century modern" }, { src: "Images/All-Interiors/58.jpeg", tag: "coastal theme" },
+            { src: "Images/All-Interiors/59.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/60.jpeg", tag: "north indian style" },
+            { src: "Images/All-Interiors/61.jpeg", tag: "maharashtrian design" }, { src: "Images/All-Interiors/62.jpeg", tag: "gujarati influence" },
+            { src: "Images/All-Interiors/63.jpeg", tag: "rajasthani elements" }, { src: "Images/All-Interiors/64.jpeg", tag: "punjabi interior" },
+            { src: "Images/All-Interiors/65.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/66.jpeg", tag: "bengali aesthetics" },
+            { src: "Images/All-Interiors/67.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/68.jpeg", tag: "kolkata flat" },
+            { src: "Images/All-Interiors/69.jpeg", tag: "mumbai apartment" }, { src: "Images/All-Interiors/70.jpeg", tag: "delhi villa" },
+            { src: "Images/All-Interiors/71.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/72.jpeg", tag: "Maharashtra is great" },
+            { src: "Images/All-Interiors/73.jpeg", tag: "pune property" }, { src: "Images/All-Interiors/74.jpeg", tag: "goa beach house" },
+            { src: "Images/All-Interiors/75.jpeg", tag: "office pantry" }, { src: "Images/All-Interiors/76.jpeg", tag: "conference room" },
+            { src: "Images/All-Interiors/77.jpeg", tag: "workstation design" }, { src: "Images/All-Interiors/78.jpeg", tag: "breakout area" },
+            { src: "Images/All-Interiors/79.jpeg", tag: "training room" }, { src: "Images/All-Interiors/80.jpeg", tag: "server room" },
+            { src: "Images/All-Interiors/81.jpeg", tag: "data center" }, { src: "Images/All-Interiors/82.jpeg", tag: "security cabin" },
+            { src: "Images/All-Interiors/83.jpeg", tag: "gym interior" }, { src: "Images/All-Interiors/84.jpeg", tag: "spa design" },
+            { src: "Images/All-Interiors/85.jpeg", tag: "salon interior" }, { src: "Images/All-Interiors/5.jpeg", tag: "entryway lighting" },
+            { src: "Images/All-Interiors/87.jpeg", tag: "boutique design" }, { src: "Images/All-Interiors/88.jpeg", tag: "restaurant design" },
+            { src: "Images/All-Interiors/89.jpeg", tag: "cafe interior" }, { src: "Images/All-Interiors/90.jpeg", tag: "bar lounge" },
+            { src: "Images/All-Interiors/93.jpeg", tag: "community hall" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
+            { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
+            { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
+
+           
+            
         ]
       },
-      "Chiplun Temple (On-going)":{
-        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
+      "Exteriors":{
+        desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
         images:[
-            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
-            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
-            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
-            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
-            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
+            { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
+            { src: "Images/Exteriors/c3.jpeg", tag: "apartment facade" }, { src: "Images/Exteriors/c4.jpeg", tag: "commercial building" },
+            { src: "Images/Exteriors/c5.jpeg", tag: "compound wall design" },{ src: "Images/Exteriors/c6.jpeg", tag: "balcony railing" } ,
+            { src: "Images/Exteriors/c14.jpeg", tag: "fountain feature" },{ src: "Images/Exteriors/c15.jpeg", tag: "landscape planning" },
+            { src: "Images/Exteriors/c11.jpeg", tag: "outdoor lighting" },{ src: "Images/Exteriors/c10.jpeg", tag: "driveway paver" },
+            { src: "Images/Exteriors/c1.jpeg", tag: "modern facade glass" }, { src: "Images/Exteriors/c12.jpeg", tag: "swimming pool" },
+            { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" },{ src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" },
+            { src: "Images/Exteriors/c8.jpeg", tag: "portico design" }
         ]
       },
-    "Home interior and exterior":{
+
+      "Home interior and exterior":{
         desc:"Complete custom home interior and exterior solutions, including modular kitchens, designer wardrobes, facade, and landscape integration for modern living.",
         images:[
             { src: "Images/Home-Interior-and-exterior/fa.jpeg", tag: "kitchen interior modular modern" },
@@ -531,14 +585,7 @@
             { src: "Images/Temple-Interior-and-Exterior/yz.jpeg", tag: "final temple design" }
         ]
       },
-      "Stone-structure for Tulsi":{
-        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
-        images:[
-            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
-            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
-            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
-        ]
-      },
+
       "Farm House work":{
         desc:"Unique farmhouse projects, including rustic and spacious designs, and specialized triangular-shaped structures integrated seamlessly with nature.",
         images:[
@@ -565,72 +612,27 @@
             { src: "Images/Triangle-Shaped/vvv.jpeg", tag: "natural materials" }
         ]
       },
-      "Interiors":{
-        desc:"A comprehensive gallery showcasing diverse interior design styles—from minimalist to luxurious traditional Indian themes—for residential and commercial spaces.",
+
+      "Chiplun Temple (On-going)":{
+        desc:"Our signature ongoing temple project at Chiplun—focusing on intricate traditional detailing, stone finishes, and strict adherence to Vastu Shastra.",
         images:[
-            { src: "Images/All-Interiors/1.jpeg", tag: "living room luxury" }, { src: "Images/All-Interiors/2.jpeg", tag: "kitchen modular" },
-            { src: "Images/All-Interiors/3.jpeg", tag: "bedroom modern" }, { src: "Images/All-Interiors/4.jpeg", tag: "dining area" },
-            { src: "Images/All-Interiors/5.jpeg", tag: "entryway lighting" }, { src: "Images/All-Interiors/6.jpeg", tag: "wardrobe design" },
-            { src: "Images/All-Interiors/7.jpeg", tag: "commercial office" }, { src: "Images/All-Interiors/8.jpeg", tag: "tv unit panel" },
-            { src: "Images/All-Interiors/9.jpeg", tag: "wall texture" }, { src: "Images/All-Interiors/10.jpeg", tag: "false ceiling" },
-            { src: "Images/All-Interiors/11.jpeg", tag: "residential bathroom" }, { src: "Images/All-Interiors/12.jpeg", tag: "staircase design" },
-            { src: "Images/All-Interiors/13.jpeg", tag: "wooden finish" }, { src: "Images/All-Interiors/14.jpeg", tag: "kids room" },
-            { src: "Images/All-Interiors/15.jpeg", tag: "pantry area" }, { src: "Images/All-Interiors/16.jpeg", tag: "bar counter" },
-            { src: "Images/All-Interiors/17.jpeg", tag: "study table" }, { src: "Images/All-Interiors/18.jpeg", tag: "home theater" },
-            { src: "Images/All-Interiors/19.jpeg", tag: "guest room" }, { src: "Images/All-Interiors/20.jpeg", tag: "master bedroom" },
-            { src: "Images/All-Interiors/21.jpeg", tag: "small apartment" }, { src: "Images/All-Interiors/22.jpeg", tag: "open plan" },
-            { src: "Images/All-Interiors/23.jpeg", tag: "partition wall" }, { src: "Images/All-Interiors/24.jpeg", tag: "ambient lighting" },
-            { src: "Images/All-Interiors/25.jpeg", tag: "balcony seating" }, { src: "Images/All-Interiors/26.jpeg", tag: "traditional motif" },
-            { src: "Images/All-Interiors/27.jpeg", tag: "storage solutions" }, { src: "Images/All-Interiors/28.jpeg", tag: "high end finish" },
-            { src: "Images/All-Interiors/29.jpeg", tag: "ceramic tile" }, { src: "Images/All-Interiors/30.jpeg", tag: "mirror work" },
-            { src: "Images/All-Interiors/31.jpeg", tag: "lobby design" }, { src: "Images/All-Interiors/32.jpeg", tag: "reception area" },
-            { src: "Images/All-Interiors/33.jpeg", tag: "meeting room" }, { src: "Images/All-Interiors/34.jpeg", tag: "lounge seating" },
-            { src: "Images/All-Interiors/35.jpeg", tag: "executive cabin" }, { src: "Images/All-Interiors/36.jpeg", tag: "library design" },
-            { src: "Images/All-Interiors/37.jpeg", tag: "artwork placement" }, { src: "Images/All-Interiors/38.jpeg", tag: "texture play" },
-            { src: "Images/All-Interiors/39.jpeg", tag: "indoor plants" }, { src: "Images/All-Interiors/40.jpeg", tag: "natural light" },
-            { src: "Images/All-Interiors/41.jpeg", tag: "minimalist style" }, { src: "Images/All-Interiors/42.jpeg", tag: "color palette" },
-            { src: "Images/All-Interiors/43.jpeg", tag: "geometric patterns" }, { src: "Images/All-Interiors/44.jpeg", tag: "accent furniture" },
-            { src: "Images/All-Interiors/45.jpeg", tag: "floating shelves" }, { src: "Images/All-Interiors/46.jpeg", tag: "false ceiling" },
-            { src: "Images/All-Interiors/47.jpeg", tag: "custom cabinetry" }, { src: "Images/All-Interiors/48.jpeg", tag: "marble flooring" },
-            { src: "Images/All-Interiors/49.jpeg", tag: "metal finishes" }, { src: "Images/All-Interiors/50.jpeg", tag: "contemporary" },
-            { src: "Images/All-Interiors/51.jpeg", tag: "classic design" }, { src: "Images/All-Interiors/52.jpeg", tag: "rustic charm" },
-            { src: "Images/All-Interiors/53.jpeg", tag: "industrial look" }, { src: "Images/All-Interiors/54.jpeg", tag: "scandinavian" },
-            { src: "Images/All-Interiors/55.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/56.jpeg", tag: "eclectic mix" },
-            { src: "Images/All-Interiors/57.jpeg", tag: "mid-century modern" }, { src: "Images/All-Interiors/58.jpeg", tag: "coastal theme" },
-            { src: "Images/All-Interiors/59.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/60.jpeg", tag: "north indian style" },
-            { src: "Images/All-Interiors/61.jpeg", tag: "maharashtrian design" }, { src: "Images/All-Interiors/62.jpeg", tag: "gujarati influence" },
-            { src: "Images/All-Interiors/63.jpeg", tag: "rajasthani elements" }, { src: "Images/All-Interiors/64.jpeg", tag: "punjabi interior" },
-            { src: "Images/All-Interiors/65.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/66.jpeg", tag: "bengali aesthetics" },
-            { src: "Images/All-Interiors/67.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/68.jpeg", tag: "kolkata flat" },
-            { src: "Images/All-Interiors/69.jpeg", tag: "mumbai apartment" }, { src: "Images/All-Interiors/70.jpeg", tag: "delhi villa" },
-            { src: "Images/All-Interiors/71.jpeg", tag: "Maharashtra is great" }, { src: "Images/All-Interiors/72.jpeg", tag: "Maharashtra is great" },
-            { src: "Images/All-Interiors/73.jpeg", tag: "pune property" }, { src: "Images/All-Interiors/74.jpeg", tag: "goa beach house" },
-            { src: "Images/All-Interiors/75.jpeg", tag: "office pantry" }, { src: "Images/All-Interiors/76.jpeg", tag: "conference room" },
-            { src: "Images/All-Interiors/77.jpeg", tag: "workstation design" }, { src: "Images/All-Interiors/78.jpeg", tag: "breakout area" },
-            { src: "Images/All-Interiors/79.jpeg", tag: "training room" }, { src: "Images/All-Interiors/80.jpeg", tag: "server room" },
-            { src: "Images/All-Interiors/81.jpeg", tag: "data center" }, { src: "Images/All-Interiors/82.jpeg", tag: "security cabin" },
-            { src: "Images/All-Interiors/83.jpeg", tag: "gym interior" }, { src: "Images/All-Interiors/84.jpeg", tag: "spa design" },
-            { src: "Images/All-Interiors/85.jpeg", tag: "salon interior" }, { src: "Images/All-Interiors/86.jpeg", tag: "retail store" },
-            { src: "Images/All-Interiors/87.jpeg", tag: "boutique design" }, { src: "Images/All-Interiors/88.jpeg", tag: "restaurant design" },
-            { src: "Images/All-Interiors/89.jpeg", tag: "cafe interior" }, { src: "Images/All-Interiors/90.jpeg", tag: "bar lounge" },
-            { src: "Images/All-Interiors/91.jpeg", tag: "clubhouse interior" }, { src: "Images/All-Interiors/93.jpeg", tag: "community hall" },
-            { src: "Images/All-Interiors/94.jpeg", tag: "hotel lobby" }, { src: "Images/All-Interiors/95.jpeg", tag: "resort room" },
-            { src: "Images/All-Interiors/96.jpeg", tag: "hospitality" }, { src: "Images/All-Interiors/912.jpeg", tag: "unique interior" }
+            { src: "Images/Chiplun-Temple/dq.jpeg", tag: "temple traditional stone vastu" },
+            { src: "Images/Chiplun-Temple/fq.jpeg", tag: "mandap spiritual carving" },
+            { src: "Images/Chiplun-Temple/lq.jpeg", tag: "sanctum detail ongoing" },
+            { src: "Images/Chiplun-Temple/sq.jpeg", tag: "stone work exterior" },
+            { src: "Images/Chiplun-Temple/tq.jpeg", tag: "shikhara design architecture" }
         ]
       },
-      "Exteriors":{
-        desc:"Focus on facade design, landscaping, and exterior planning to ensure curb appeal, structural soundness, and aesthetic integration with the environment.",
+
+      "Stone-structure for Tulsi":{
+        desc:"Custom stone plinths and decorative structures for Tulsi, built with traditional craftsmanship and locally sourced stone materials.",
         images:[
-            { src: "Images/Exteriors/c1.jpeg", tag: "modern facade glass" }, { src: "Images/Exteriors/c2.jpeg", tag: "villa exterior" },
-            { src: "Images/Exteriors/c3.jpeg", tag: "apartment facade" }, { src: "Images/Exteriors/c4.jpeg", tag: "commercial building" },
-            { src: "Images/Exteriors/c5.jpeg", tag: "compound wall design" }, { src: "Images/Exteriors/c6.jpeg", tag: "balcony railing" },
-            { src: "Images/Exteriors/c7.jpeg", tag: "terrace garden" }, { src: "Images/Exteriors/c8.jpeg", tag: "portico design" },
-            { src: "Images/Exteriors/c9.jpeg", tag: "gate design" }, { src: "Images/Exteriors/c10.jpeg", tag: "driveway paver" },
-            { src: "Images/Exteriors/c11.jpeg", tag: "outdoor lighting" }, { src: "Images/Exteriors/c12.jpeg", tag: "swimming pool" },
-            { src: "Images/Exteriors/c13.jpeg", tag: "pergola seating" }, { src: "Images/Exteriors/c14.jpeg", tag: "fountain feature" },
-            { src: "Images/Exteriors/c15.jpeg", tag: "landscape planning" }
+            { src: "Images/Tulsi-work/abc.jpeg", tag: "tulsi stone plinth traditional" },
+            { src: "Images/Tulsi-work/def.jpeg", tag: "decorative stone craftsmanship" },
+            { src: "Images/Tulsi-work/ghi.jpeg", tag: "outdoor religious structure" }
         ]
       },
+      
       "Real World 3D":{
         desc:"High-fidelity 3D real-world visualizations and renderings used for client presentations, marketing materials, and critical pre-construction review.",
         images:[
@@ -649,9 +651,20 @@
             { src: "Images/3D-real-world/NR-HR-666.jpg", tag: "HR rendering facade" },
             { src: "Images/3D-real-world/NR-HR-888.jpg", tag: "HR rendering detail" }
         ]
-      }
-    };
+      },
 
+      "Building Constructions":{
+        desc:"Large-scale building projects—structural planning, execution supervision, and exterior design. Focused on modern and robust structural integrity.",
+        images:[
+            { src: "Images/Building-construction/fa.jpeg", tag: "structure planning facade modern" },
+            { src: "Images/Building-construction/fc.jpeg", tag: "exterior design commercial robust" }
+        ]
+      }
+      
+    
+      
+    };
+    
     // --- State & Initialization ---
 
     // Flatten data for search indexing
@@ -1022,3 +1035,4 @@
 </script>
 </body>
 </html>
+
