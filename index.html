@@ -106,24 +106,24 @@
             padding: 1rem;
             margin-bottom: 20px;
             display: flex;
-            flex-direction: column; /* Stack filter and search vertically on mobile */
+            flex-direction: column; 
             gap: 12px;
         }
         #category-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px; /* Reduced gap for more pills per row */
+            gap: 8px; 
         }
         .pill-button {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 16px; /* Reduced padding slightly */
+            padding: 8px 16px; 
             border-radius: 999px;
             color: var(--muted);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
-            font-size: 0.875rem; /* Slightly smaller text */
+            font-size: 0.875rem; 
             flex-shrink: 0;
         }
         .pill-button.active {
@@ -242,39 +242,87 @@
 
         /* --- MOBILE ADJUSTMENTS (max-width: 768px) --- */
         @media (max-width: 768px) {
-            /* 1. Profile Picture: Enlarge and keep circular */
-            .hero { flex-direction: column; align-items: flex-start; padding: 20px; }
-            .portrait { 
-                width: 180px; /* Increased size for mobile */
-                height: 180px; 
-                border-radius: 50%; /* Ensure it stays circular */
-                margin: 0 auto 10px 0; /* Align left */
-            }
             
-            /* 3. Title: Smaller size for single line */
-            .hero .info h1 {
-                font-size: 1.5rem; /* Equivalent to text-2xl, smaller than 3xl/4xl desktop */
-                line-height: 1.2;
-                white-space: nowrap;
+            /* --- 3. Navbar Restructure for Mobile --- */
+            .app-container > nav > div {
+                /* Container is flex and column on mobile */
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 0; /* Reset gap */
             }
 
-            /* 2. Navbar: Keep buttons together, adjust alignment */
-            .app-container > nav > div {
-                flex-wrap: wrap;
-                justify-content: space-between;
-                gap: 8px;
-            }
             .app-container > nav > div > h1 {
-                width: 100%; /* Title takes full width */
+                /* Title: Top Center */
+                width: 100%; 
+                text-align: center;
+                margin-bottom: 12px; /* Space below title */
                 font-size: 1.1rem;
             }
-            .app-container > nav > div > div {
-                /* Container for Profile and View Projects */
+            
+            .nav-mobile-buttons {
+                /* New wrapper for buttons to align them */
                 display: flex;
-                width: 100%; /* Take full width */
-                justify-content: flex-end; /* Push to the right */
-                gap: 12px; /* Spacing between the buttons */
-                margin-top: 8px;
+                width: 100%;
+                justify-content: space-between; /* Pushes Profile to left, Projects to right */
+                margin-top: 0;
+                gap: 0; /* Buttons have their own padding/margin */
+            }
+            .nav-mobile-buttons .text-gray-400 {
+                /* Profile button at top left */
+                margin-right: auto;
+            }
+            .nav-mobile-buttons .bg-green-600 {
+                /* View Projects button at top right */
+                margin-left: auto;
+            }
+
+
+            /* --- 1. Profile Picture: Centered in Hero Card --- */
+            .hero { 
+                flex-direction: column; 
+                align-items: center; /* Center everything vertically in column layout */
+                padding: 20px; 
+                text-align: center; /* Center text within the info block */
+            }
+            
+            .portrait { 
+                width: 180px; 
+                height: 180px; 
+                border-radius: 50%; 
+                margin: 0 auto 10px auto; /* Center the profile image horizontally */
+            }
+            
+            /* --- 2. Text/Content Alignment Fix (Inside Hero Card) --- */
+            .hero .info {
+                width: 100%; /* Ensure info container uses full width */
+                display: flex; /* Use flex to align children */
+                flex-direction: column;
+                align-items: center; /* Center text blocks/buttons */
+                text-align: center; 
+            }
+
+            .hero .info h1 {
+                font-size: 1.5rem; 
+                line-height: 1.2;
+                white-space: nowrap;
+                /* Allow overflow for safety, but rely on font size reduction */
+                overflow: hidden; 
+                text-overflow: ellipsis;
+                width: 100%;
+                text-align: center; /* Ensure name is centered */
+            }
+            
+            .hero .info .role,
+            .hero .info .desc {
+                text-align: center;
+                width: 100%;
+            }
+
+            .hero .info .flex-wrap {
+                 /* Center the button group */
+                 justify-content: center;
+                 width: 100%;
             }
             
             /* General Mobile Gallery/Grid Adjustments */
@@ -283,7 +331,7 @@
             .featured-img { height: 120px; }
             .controls-bar { align-items: stretch; }
             .nav-arrow { width: 40px; }
-            #project-search { margin-top: 5px; } /* Adjust spacing for mobile search bar */
+            #project-search { margin-top: 5px; } 
         }
     </style>
 </head>
@@ -293,8 +341,11 @@
         <!-- Navbar/Header (Stays visible across both views) -->
         <nav class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-sm p-4 shadow-2xl">
             <div class="flex justify-between items-center max-w-7xl mx-auto">
+                <!-- Title: Always takes full width on mobile due to flex-direction: column in media query -->
                 <h1 class="text-xl font-bold text-white tracking-widest"> <span class="text-green-600"> ARCH. </span>S. R. KOUNDARKAR </h1>
-                <div class="space-x-4 flex-shrink-0">
+                
+                <!-- New Wrapper for Mobile Button Alignment -->
+                <div class="space-x-4 flex-shrink-0 nav-mobile-buttons">
                     <button id="nav-home" class="text-gray-400 hover:text-white transition-colors font-medium">Profile</button>
                     <button id="nav-projects" class="text-black bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition-all font-bold shadow-md hover:shadow-green-500/50">
                         View Projects
@@ -311,16 +362,16 @@
                     <img src="Images/Sanjay.jpeg" alt="Architect Sanjay R. Koundarkar Portrait" onerror="this.onerror=null;this.src='https://placehold.co/250x250/374151/white?text=Portrait+Missing';"> 
                 </div>
                 <div class="info">
-                    <!-- Adjusted text sizing for mobile in CSS media query -->
+                    <!-- Text is centered via parent .info styles in mobile media query -->
                     <h1 class="text-3xl sm:text-4xl font-extrabold">Mr. Sanjay  Rajendra  Koundarkar</h1>
                     <div class="text-xl role"><span class="text-yellow-600"><bold>Architect | Residential, Commercial, Temple Interior & Exterior</bold></span></div>
                 
-                    <!-- Updated Paragraph with highlighted experience -->
+                    <!-- Description is centered via parent .info styles -->
                     <p class="desc mt-3 text-gray-300">
                         Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">18 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
                     </p>
                     
-                    <!-- Updated Attractive Buttons -->
+                    <!-- Button group is centered via parent .info styles -->
                     <div class="flex flex-wrap gap-3 mt-6">
                         <!-- Contact Button (Phone) -->
                         <a href="tel:+919890542067" class="flex items-center space-x-2 px-4 py-3 rounded-full bg-gray-700 text-green-400 font-bold hover:bg-gray-600 transition-all shadow-lg active:scale-95">
