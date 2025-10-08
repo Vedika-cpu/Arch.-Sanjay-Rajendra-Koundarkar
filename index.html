@@ -348,10 +348,10 @@
             .hero .info h1 {
                 font-size: 1.5rem; 
                 line-height: 1.2;
-                white-space: nowrap;
-                /* Allow overflow for safety, but rely on font size reduction */
-                overflow: hidden; 
-                text-overflow: ellipsis;
+                /* FIX: Removed the following 3 lines to allow text to wrap onto multiple lines */
+                /* white-space: nowrap; */
+                /* overflow: hidden; */
+                /* text-overflow: ellipsis; */
                 width: 100%;
                 text-align: center; /* Ensure name is centered */
             }
@@ -404,7 +404,7 @@
                     <div class="text-xl role"><span class="text-yellow-600"><bold>Architect | Residential, Commercial, Temple Interior & Exterior</bold></span></div>
                 
                     <p class="desc mt-3 text-gray-300">
-                        Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">15 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
+                        Experienced architect specializing in blending modern aesthetics with cultural and traditional Indian design principles, with <strong class="text-green-400 font-extrabold text-lg">18 YEARS OF EXPERIENCE</strong>. Our expertise spans residential and commercial interiors, exteriors, sacred temple architecture, and specialized stone structures. We focus on creating sustainable, sensitive, and enduring spaces across Maharashtra and India.
                     </p>
                     
                     <div class="flex flex-wrap gap-3 mt-6">
@@ -493,7 +493,7 @@
     
     <div id="loading-indicator" class="fixed inset-0 bg-gray-900/90 z-[60] flex flex-col items-center justify-center text-white text-lg transition-opacity duration-300 pointer-events-none opacity-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="animate-spin -ml-1 mr-3 h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
-        Excellence....
+        Loading Portfolio...
     </div>
 
 <script>
@@ -1041,4 +1041,3 @@
 </script>
 </body>
 </html>
-
